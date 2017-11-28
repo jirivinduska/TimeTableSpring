@@ -1,6 +1,7 @@
 package com.edu.rozvrhHodin.repository.entity;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -7,11 +7,11 @@ import java.time.DayOfWeek;
 import java.util.*;
 
 public class Predmety {
-    private Map<String,Predmet> predmets;
+    private List<Predmet> predmets;
     private Scanner sc;
 
     public Predmety() {
-        predmets = new HashMap<String, Predmet>();
+        predmets = new ArrayList<Predmet>();
         sc = new Scanner(System.in, "Windows-1250");
     }
 
@@ -27,12 +27,12 @@ public class Predmety {
         System.out.println("Zadej den, kdy bude předmět");
         String dayOfWeek = sc.nextLine();
         System.out.println("Zadej zadej hodinu předmětu");
-        int hour = Integer.parseInt(sc.nextLine());
+        int hour = sc.nextInt();
         Predmet predmet = new Predmet(abrev,name,lectorName,roomNO, DayOfWeek.valueOf(dayOfWeek),hour);
-        predmets.put(abrev ,predmet);
+        predmets.add(predmet);
     }
 
-    public Map<String, Predmet> getPredmets() {
+    public List<Predmet> getPredmets() {
         return predmets;
     }
 }

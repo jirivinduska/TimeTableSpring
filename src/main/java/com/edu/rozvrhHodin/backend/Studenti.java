@@ -1,7 +1,9 @@
 package com.edu.rozvrhHodin.backend;
 
+import com.edu.rozvrhHodin.repository.entity.Predmet;
 import com.edu.rozvrhHodin.repository.entity.Student;
 
+import java.time.DayOfWeek;
 import java.util.*;
 
 public class Studenti {
