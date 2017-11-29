@@ -3,7 +3,9 @@ package com.edu.rozvrhHodin.repository.entity;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -18,30 +20,39 @@ public class Student {
     @Column(name = "last_name")
     private String lastName;
 
+    private boolean active;
+
     private String email;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable( name="rozvrh",
-            joinColumns = {@JoinColumn(name="student_id")},
-            inverseJoinColumns = {@JoinColumn(name = "predmet_id")}
-            )
-    private List<Predmet> predmety;
+
+    @OneToMany(mappedBy = "student")
+    public Set<StudentSubject> studentSubjects = new HashSet<StudentSubject>();
 
     public Student(String userName, String firstName, String lastName, String email) {
-        predmety = new ArrayList<Predmet>();
+
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        active = true;
     }
 
-    public List<Predmet> getPredmety() {
-        return predmety;
+    public Set<StudentSubject> getStudentSubjects() {
+        return studentSubjects;
+    }
+
+    public void setStudentSubjects(Set<StudentSubject> studentSubjects) {
+        this.studentSubjects = studentSubjects;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 
-    public void setPredmety(List<Predmet> predmety) {
-        this.predmety = predmety;
-    }
 
     public long getId() {
         return id;

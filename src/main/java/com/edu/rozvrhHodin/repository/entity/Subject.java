@@ -5,13 +5,11 @@ import javax.persistence.*;
 import java.time.DayOfWeek;
 
 import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "subject")
-public class Predmet {
+public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -30,22 +28,33 @@ public class Predmet {
     @Enumerated(EnumType.STRING)
     private DayOfWeek weekday;
 
+
     private int hour;
 
-    @ManyToMany(mappedBy = "predmety")
-    private List<Student> students;
+    @OneToMany(mappedBy = "subject")
+    public Set<StudentSubject> studentSubjectSet = new HashSet<StudentSubject>();
 
-    public Predmet(String abrev, String name, String lectorName, int roomNo, DayOfWeek weekday, int hour) {
+    public Subject(String abrev, String name, String lectorName, int roomNo, DayOfWeek weekday, int hour) {
+
         this.abrev = abrev;
         this.name = name;
         this.lectorName = lectorName;
         this.roomNo = roomNo;
         this.weekday = weekday;
+
         this.hour = hour;
     }
 
     public long getId() {
         return id;
+    }
+
+    public Set<StudentSubject> getStudentSubjectSet() {
+        return studentSubjectSet;
+    }
+
+    public void setStudentSubjectSet(Set<StudentSubject> studentSubjectSet) {
+        this.studentSubjectSet = studentSubjectSet;
     }
 
     public void setId(long id) {
