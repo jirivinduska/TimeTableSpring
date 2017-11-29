@@ -37,6 +37,7 @@ public class MaintenanceMan {
     public void initMain(){
         List<Student> students = new ArrayList<Student>();
         List<Subject> predmets = new ArrayList<Subject>();
+        startTransaction();
       //Vytváření studentů
         Student st1 = new Student("st1","Bernard","Škorpík","Bernard@skorpik.cz");
         students.add(st1);
@@ -99,6 +100,8 @@ public class MaintenanceMan {
 
         entityManager.persist(sS);
         entityManager.flush();
+        commitTransaction();
+        endTransaction();
 
     }
 

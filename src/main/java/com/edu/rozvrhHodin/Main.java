@@ -18,15 +18,15 @@ public class Main {
 
 
         MaintenanceMan mM = new MaintenanceMan();
-        mM.startTransaction();
+      //  mM.startTransaction();
         mM.initMain();
 
       /*  mM.addStudent();
         mM.addSubject();*/
-        mM.commitTransaction();
+     /*   mM.commitTransaction();
         mM.endTransaction();
 
-
+*/
 
 
 
