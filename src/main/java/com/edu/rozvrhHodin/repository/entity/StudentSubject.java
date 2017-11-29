@@ -1,17 +1,16 @@
 package com.edu.rozvrhHodin.repository.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "students_subjects")
-public class StudentSubject {
+public class StudentSubject implements Serializable {
     @Id
-    @GeneratedValue
-    @Column(name = "Student_Subject_ID")
-    private long id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
     private Student student;
+    @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subject_id")
     private Subject subject;
@@ -19,13 +18,7 @@ public class StudentSubject {
 
     private int classHour;
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public Student getStudent() {
         return student;

@@ -10,6 +10,7 @@ import sun.nio.cs.StandardCharsets;
 import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,7 +34,7 @@ public class MaintenanceMan {
     public void initMain(){
         List<Student> students = new ArrayList<Student>();
         List<Subject> predmets = new ArrayList<Subject>();
-        //Vytváření studentů
+    /*   //Vytváření studentů
         Student st1 = new Student("st1","Bernard","Škorpík","Bernard@skorpik.cz");
         students.add(st1);
         Student st2 = new Student("st2","Svatopluk","Kubát","Svatopluk@Kubat.cz");
@@ -82,11 +83,22 @@ public class MaintenanceMan {
         for (Subject subject : predmets
                 ) {
             entityManager.persist(subject);
-        }
+
+
+*/
+
+        Student st1 = new Student("st1","Bernard","Škorpík","Bernard@skorpik.cz");
+
+        Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře", 1, DayOfWeek.MONDAY, 1);
+
+entityManager.persist(pr1);
+entityManager.persist(st1);
         StudentSubject studentSubject = new StudentSubject();
-        studentSubject.setStudent(st1);
         studentSubject.setSubject(pr1);
+        studentSubject.setStudent(st1);
         studentSubject.setClassHour(pr1.getHour());
+
+
         entityManager.persist(studentSubject);
         entityManager.flush();
 
