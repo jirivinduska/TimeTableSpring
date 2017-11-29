@@ -25,10 +25,10 @@ public class Subject {
     @Column(name="room_number")
     private int roomNo;
 
-    @Enumerated(EnumType.STRING)
+    @Transient
     private DayOfWeek weekday;
 
-
+    @Transient
     private int hour;
 
     @OneToMany(mappedBy = "subject")
@@ -43,6 +43,11 @@ public class Subject {
         this.weekday = weekday;
 
         this.hour = hour;
+    }
+
+    public Subject(String abrev, String name) {
+        this.abrev = abrev;
+        this.name = name;
     }
 
     public long getId() {

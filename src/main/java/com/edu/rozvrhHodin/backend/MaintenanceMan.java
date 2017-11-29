@@ -17,10 +17,13 @@ import java.util.Scanner;
 public class MaintenanceMan {
     Scanner sc;
     EntityManager entityManager;
+    StudentSubject sS;
     public MaintenanceMan() {
         sc = new Scanner(System.in, "UTF-8");
         entityManager = ServiceLocator.createEntityManager();
-
+        Subject freeTime = new Subject("VOLNO", "VOLNO");
+        entityManager.persist(freeTime);
+        sS = new StudentSubject();
     }
     public void startTransaction(){
         entityManager.getTransaction().begin();
@@ -34,7 +37,7 @@ public class MaintenanceMan {
     public void initMain(){
         List<Student> students = new ArrayList<Student>();
         List<Subject> predmets = new ArrayList<Subject>();
-    /*   //Vytváření studentů
+      //Vytváření studentů
         Student st1 = new Student("st1","Bernard","Škorpík","Bernard@skorpik.cz");
         students.add(st1);
         Student st2 = new Student("st2","Svatopluk","Kubát","Svatopluk@Kubat.cz");
@@ -78,28 +81,23 @@ public class MaintenanceMan {
         predmets.add(pr8);
         Subject pr9 = new Subject("INLC2", "Laboratorní cvičení z oboru II", "Ignác Cézar", 2, DayOfWeek.THURSDAY, 3);
         predmets.add(pr9);
-        Subject pr10 = new Subject("INSEP", "Semestrální projekt", "Mithc Bjůkenen", 2, DayOfWeek.WEDNESDAY, 3);
+        Subject pr10 = new Subject("INSEP", "Semestrální projekt", "Mitch Bjůkenen", 2, DayOfWeek.WEDNESDAY, 3);
         predmets.add(pr10);
         for (Subject subject : predmets
                 ) {
             entityManager.persist(subject);
 
-
-*/
-
-        Student st1 = new Student("st1","Bernard","Škorpík","Bernard@skorpik.cz");
-
-        Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře", 1, DayOfWeek.MONDAY, 1);
-
-entityManager.persist(pr1);
-entityManager.persist(st1);
-        StudentSubject studentSubject = new StudentSubject();
-        studentSubject.setSubject(pr1);
-        studentSubject.setStudent(st1);
-        studentSubject.setClassHour(pr1.getHour());
+        }
 
 
-        entityManager.persist(studentSubject);
+        sS.setSubject(pr1);
+        sS.setStudent(st1);
+        sS.setClassHour(pr1.getHour());
+        sS.setWeekday(pr1.getWeekday());
+        sS.setModificationDate(Calendar.getInstance());
+
+
+        entityManager.persist(sS);
         entityManager.flush();
 
     }
