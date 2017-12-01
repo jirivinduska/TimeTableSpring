@@ -25,7 +25,7 @@ public class Student {
     private String email;
 
     @OneToMany(mappedBy = "student")
-    public Set<StudentSubject> studentSubjects = new HashSet<StudentSubject>();
+    public List<StudentSubject> studentSubjects = new ArrayList<StudentSubject>();
 
     public Student(String userName, String firstName, String lastName, String email) {
 
@@ -36,11 +36,14 @@ public class Student {
         active = true;
     }
 
-    public Set<StudentSubject> getStudentSubjects() {
+    public Student() {
+    }
+
+    public List<StudentSubject> getStudentSubjects() {
         return studentSubjects;
     }
 
-    public void setStudentSubjects(Set<StudentSubject> studentSubjects) {
+    public void setStudentSubjects(List<StudentSubject> studentSubjects) {
         this.studentSubjects = studentSubjects;
     }
 

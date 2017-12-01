@@ -4,6 +4,7 @@ package com.edu.rozvrhHodin.backend;
 import com.edu.rozvrhHodin.repository.entity.Student;
 import com.edu.rozvrhHodin.repository.entity.StudentSubject;
 import com.edu.rozvrhHodin.repository.entity.Subject;
+import com.edu.rozvrhHodin.repository.entity.TimeSchedule;
 import com.edu.rozvrhHodin.service.ServiceLocator;
 import sun.nio.cs.StandardCharsets;
 
@@ -63,7 +64,7 @@ public class MaintenanceMan {
              ) {
             entityManager.persist(student);
         }
-        //Vytváření předmětů
+  /*      //Vytváření předmětů
         Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře", 1, DayOfWeek.MONDAY, 1);
         predmets.add(pr1);
         Subject pr2 = new Subject("INAR1", "Teorie automatického řízení I", "Tomáš Jedno", 2, DayOfWeek.MONDAY, 2);
@@ -89,12 +90,23 @@ public class MaintenanceMan {
             entityManager.persist(subject);
 
         }
-
-
+*/
+        Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře",1);
         sS.setSubject(pr1);
         sS.setStudent(st1);
-        sS.setClassHour(pr1.getHour());
-        sS.setWeekday(pr1.getWeekday());
+        TimeSchedule timeSchedule = new TimeSchedule();
+        timeSchedule.setWeekday(DayOfWeek.FRIDAY);
+        timeSchedule.setHour(1);
+        timeSchedule.setSubject(pr1);
+        List<TimeSchedule> timeSchedules = new ArrayList<TimeSchedule>();
+        timeSchedules.add(timeSchedule);
+        pr1.setTimeSchedules(timeSchedules);
+
+        entityManager.persist(pr1);
+        entityManager.persist(timeSchedule);
+
+        sS.setClassHour(pr1.getTimeSchedules().get(0).getHour());
+        sS.setWeekday(pr1.getTimeSchedules().get(0).getWeekday());
         sS.setModificationDate(Calendar.getInstance());
 
 
@@ -130,8 +142,8 @@ public class MaintenanceMan {
         DayOfWeek weekday = DayOfWeek.valueOf(sc.nextLine());
         System.out.println("Zadej hodinu, kdy se bude předmět konat");
         int hour = Integer.parseInt(sc.nextLine());
-        Subject subject = new Subject(abrev,name,lectorName,roomNo,weekday,hour) ;
-        entityManager.persist(subject);
+        //Subject subject = new Subject(abrev,name,lectorName,roomNo,weekday,hour) ;
+        //entityManager.persist(subject);
     }
     public void freeTime(){
 

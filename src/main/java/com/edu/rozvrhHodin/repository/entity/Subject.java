@@ -2,6 +2,7 @@ package com.edu.rozvrhHodin.repository.entity;
 
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.time.DayOfWeek;
 
 import java.time.LocalTime;
@@ -25,24 +26,21 @@ public class Subject {
     @Column(name="room_number")
     private int roomNo;
 
-    @Transient
-    private DayOfWeek weekday;
-
-    @Transient
-    private int hour;
+    @OneToMany(mappedBy = "subject")
+    private List<TimeSchedule> timeSchedules = new ArrayList<TimeSchedule>();
 
     @OneToMany(mappedBy = "subject")
-    public Set<StudentSubject> studentSubjectSet = new HashSet<StudentSubject>();
+    private List<StudentSubject> studentSubjectSet = new ArrayList<StudentSubject>();
 
-    public Subject(String abrev, String name, String lectorName, int roomNo, DayOfWeek weekday, int hour) {
+
+
+    public Subject(String abrev, String name, String lectorName, int roomNo) {
 
         this.abrev = abrev;
         this.name = name;
         this.lectorName = lectorName;
         this.roomNo = roomNo;
-        this.weekday = weekday;
 
-        this.hour = hour;
     }
 
     public Subject(String abrev, String name) {
@@ -50,15 +48,26 @@ public class Subject {
         this.name = name;
     }
 
+    public Subject() {
+    }
+
+    public List<TimeSchedule> getTimeSchedules() {
+        return timeSchedules;
+    }
+
+    public void setTimeSchedules(List<TimeSchedule> timeSchedules) {
+        this.timeSchedules = timeSchedules;
+    }
+
     public long getId() {
         return id;
     }
 
-    public Set<StudentSubject> getStudentSubjectSet() {
+    public List<StudentSubject> getStudentSubjectSet() {
         return studentSubjectSet;
     }
 
-    public void setStudentSubjectSet(Set<StudentSubject> studentSubjectSet) {
+    public void setStudentSubjectSet(List<StudentSubject> studentSubjectSet) {
         this.studentSubjectSet = studentSubjectSet;
     }
 
@@ -98,22 +107,7 @@ public class Subject {
         this.roomNo = roomNo;
     }
 
-    public DayOfWeek getWeekday() {
-        return weekday;
-    }
 
-    public void setWeekday(DayOfWeek weekday) {
-        this.weekday = weekday;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-
-    }
 
     @Override
     public String toString() {
@@ -122,8 +116,7 @@ public class Subject {
                 ", name='" + name + '\'' +
                 ", lectorName='" + lectorName + '\'' +
                 ", roomNo=" + roomNo +
-                ", weekday=" + weekday +
-                ", hour=" + hour +
+
                 '}';
     }
 }
