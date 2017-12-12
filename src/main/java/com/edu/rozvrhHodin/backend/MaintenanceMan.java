@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MaintenanceMan {
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     Scanner sc;
     EntityManager entityManager;
     StudentSubject sS;
@@ -101,39 +105,133 @@ public class MaintenanceMan {
         entityManager.persist(sS);
         entityManager.flush();
         commitTransaction();
-        endTransaction();
+       // endTransaction();
 
     }
 
     public void addStudent(){
         System.out.println("Zadej přihlašovací jméno");
-        String username = sc.nextLine();
+        String username = usernameInput();
         System.out.println("Zadej jméno studenta");
-        String firstname = sc.nextLine();
+        String firstname = nameInput();
         System.out.println("Zadej přijmení studenta");
-        String lastname = sc.nextLine();
+        String lastname = nameInput();
         System.out.println("Zadej email studenta");
-        String email = sc.nextLine();
+        String email = emailInput();
         Student student = new Student(username,firstname,lastname,email);
         entityManager.persist(student);
     }
     public void addSubject(){
         System.out.println("Zadej zkratku předmětu");
-        String abrev = sc.nextLine();
+        String abrev = abrevInput();
         System.out.println("Zadej název předmětu");
-        String name = sc.nextLine();
+        String name = nameInput();
         System.out.println("Zadej jméno vyučujícího");
-        String lectorName = sc.nextLine();
+        String lectorName = lectorNameInput();
         System.out.println("Zadej číslo učebny");
-        int roomNo = Integer.parseInt(sc.nextLine());
+        int roomNo = roomNoInput();
         System.out.println("Zadej den, kdy se bude předmět konat");
-        DayOfWeek weekday = DayOfWeek.valueOf(sc.nextLine());
+        DayOfWeek weekday = dayOfWeekInput();
         System.out.println("Zadej hodinu, kdy se bude předmět konat");
-        int hour = Integer.parseInt(sc.nextLine());
+        int hour = hourInput();
         Subject subject = new Subject(abrev,name,lectorName,roomNo,weekday,hour) ;
         entityManager.persist(subject);
     }
-    public void freeTime(){
+ private String  usernameInput() {
+            String username = sc.nextLine();
+            username = username.toLowerCase();
+        return username;
+ }
+ private String nameInput(){
+     String name = sc.nextLine();
+     if(name.length() < 2){
+         System.out.println("Jmeno, příjmení a název předmětu nesmí být jedno písmenné");
+         return nameInput();
+     }
+         name = name.substring(0,1).toUpperCase()+name.substring(1).toLowerCase();
+         return name;
+ }
+ private String emailInput(){
+     String email = sc.nextLine();
+     if (!validate(email)){
+         System.out.println("Zadaný text není email!");
+         return  emailInput();
+     }
+         return email;
+ }
+private String abrevInput(){
+    String abrev = sc.nextLine();
+    if (abrev.length()>3){
+        System.out.println("Zkratka předmětu musí být maximálně tří písmenná");
+        return abrevInput();
+    }
+    abrev = abrev.toUpperCase();
+    return abrev;
+}
+private String lectorNameInput(){
+    String lectorName = sc.nextLine();
+    if(lectorName.length() < 2){
+        System.out.println("Jmeno učitele nesmí být kratší než jedno písmeno");
+        return nameInput();
+    }
+    try {
+        String name[] = lectorName.split(" ");
+        name[0] = name[0].substring(0, 1).toUpperCase() + name[0].substring(1).toLowerCase();
+        name[1] = name[1].substring(0, 1).toUpperCase() + name[1].substring(1).toLowerCase();
+        lectorName = name[0] + " " + name[1];
+    }
+    catch (Exception e){
+        System.out.println("Zadej jmeno a prijmeni, v zadaném textu musí být mezera");
+        return lectorNameInput();
+    }
+    return lectorName;
+}
+private int roomNoInput(){
+    int number;
+    try{
+         number = Integer.parseInt(sc.nextLine());
+         if (number > 20){
+             System.out.println("Naše škola má jenom 20 učeben");
+             return roomNoInput();
+         }
 
+    }
+    catch (Exception e){
+        System.out.println("Musíš zadat číslo!");
+        return roomNoInput();
+    }
+    return number;
+}
+    private int hourInput(){
+        int number;
+        try{
+            number = Integer.parseInt(sc.nextLine());
+            if (number > 6){
+                System.out.println("Naše škola má jenom 6 vyučovacích hodin");
+                return hourInput();
+            }
+
+        }
+        catch (Exception e){
+            System.out.println("Musíš zadat číslo!");
+            return hourInput();
+        }
+        return number;
+    }
+
+private DayOfWeek dayOfWeekInput(){
+    DayOfWeek dayOfWeek;
+    try{
+       dayOfWeek = DayOfWeek.valueOf(sc.nextLine().toUpperCase());
+    }catch (Exception e){
+        System.out.println("Musíš zadat den ve tvaru: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY");
+    return dayOfWeekInput();
+    }
+    return dayOfWeek;
+}
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
     }
 }
