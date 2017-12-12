@@ -1,6 +1,6 @@
 package com.edu.rozvrhHodin.frontend;
 
-public final class ConsoleWriter {
+public class ConsoleWriter {
     public ConsoleWriter(){
 
     }

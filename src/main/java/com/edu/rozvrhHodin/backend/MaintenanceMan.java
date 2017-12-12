@@ -22,6 +22,7 @@ public class MaintenanceMan {
     Scanner sc;
     EntityManager entityManager;
     StudentSubject sS;
+    List<Subject> predmets;
     public MaintenanceMan() {
         sc = new Scanner(System.in, "UTF-8");
         entityManager = ServiceLocator.createEntityManager();
@@ -40,8 +41,8 @@ public class MaintenanceMan {
     }
     public void initMain(){
         List<Student> students = new ArrayList<Student>();
-        List<Subject> predmets = new ArrayList<Subject>();
-        startTransaction();
+        predmets = new ArrayList<Subject>();
+       startTransaction();
       //Vytváření studentů
         Student st1 = new Student("st1","Bernard","Škorpík","Bernard@skorpik.cz");
         students.add(st1);
@@ -70,7 +71,7 @@ public class MaintenanceMan {
         //Vytváření předmětů
         Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře", 1, DayOfWeek.MONDAY, 1);
         predmets.add(pr1);
-        Subject pr2 = new Subject("INAR1", "Teorie automatického řízení I", "Tomáš Jedno", 2, DayOfWeek.MONDAY, 2);
+        Subject pr2 = new Subject("INAR1", "Teorie automatického řízení I", "Tomáš Jedno", 1, DayOfWeek.MONDAY, 2);
         predmets.add(pr2);
         Subject pr3 = new Subject("INVKM", "Vybrané kapitoly z matematiky", "Kamil Čůral", 3, DayOfWeek.TUESDAY, 4);
         predmets.add(pr3);
@@ -105,7 +106,7 @@ public class MaintenanceMan {
         entityManager.persist(sS);
         entityManager.flush();
         commitTransaction();
-       // endTransaction();
+        //endTransaction();
 
     }
 
@@ -122,6 +123,7 @@ public class MaintenanceMan {
         entityManager.persist(student);
     }
     public void addSubject(){
+        startTransaction();
         System.out.println("Zadej zkratku předmětu");
         String abrev = abrevInput();
         System.out.println("Zadej název předmětu");
@@ -134,8 +136,11 @@ public class MaintenanceMan {
         DayOfWeek weekday = dayOfWeekInput();
         System.out.println("Zadej hodinu, kdy se bude předmět konat");
         int hour = hourInput();
-        Subject subject = new Subject(abrev,name,lectorName,roomNo,weekday,hour) ;
+        Subject subject = new Subject(abrev,name,lectorName,roomNo,weekday,hour);
+        compareHour(subject);
         entityManager.persist(subject);
+        commitTransaction();
+        endTransaction();
     }
  private String  usernameInput() {
             String username = sc.nextLine();
@@ -161,8 +166,8 @@ public class MaintenanceMan {
  }
 private String abrevInput(){
     String abrev = sc.nextLine();
-    if (abrev.length()>3){
-        System.out.println("Zkratka předmětu musí být maximálně tří písmenná");
+    if (abrev.length()>5){
+        System.out.println("Zkratka předmětu musí být maximálně pět písmen");
         return abrevInput();
     }
     abrev = abrev.toUpperCase();
@@ -190,8 +195,8 @@ private int roomNoInput(){
     int number;
     try{
          number = Integer.parseInt(sc.nextLine());
-         if (number > 20){
-             System.out.println("Naše škola má jenom 20 učeben");
+         if (number > 20 || number==0){
+             System.out.println("Naše škola má jenom 20 učeben a neexistuje nultá učebna");
              return roomNoInput();
          }
 
@@ -206,8 +211,8 @@ private int roomNoInput(){
         int number;
         try{
             number = Integer.parseInt(sc.nextLine());
-            if (number > 6){
-                System.out.println("Naše škola má jenom 6 vyučovacích hodin");
+            if (number > 6 || number == 0){
+                System.out.println("Naše škola má jenom 6 vyučovacích hodin a nelze mít nultou hodinu");
                 return hourInput();
             }
 
@@ -229,6 +234,45 @@ private DayOfWeek dayOfWeekInput(){
     }
     return dayOfWeek;
 }
+private int setNewHour(int hour){
+    int newHour = hourInput();
+    if(newHour == hour){
+        System.out.println("Musíš zadat jinou hodinu než " + hour);
+        return setNewHour(hour);
+    }
+    return newHour;
+
+}
+private void compareHour(Subject predmet){
+    List<Subject> duplicatesWeekday = new ArrayList<Subject>();
+    List<Subject> duplicatesRoom = new ArrayList<Subject>();
+    for(Subject subject : predmets)
+    {
+        if(subject.getWeekday().compareTo(predmet.getWeekday())==0)
+        {
+            duplicatesWeekday.add(subject);
+        }
+    }
+    for (Subject subject:duplicatesWeekday
+         ) {
+        if (subject.getRoomNo() == predmet.getRoomNo()){
+            duplicatesRoom.add(subject);
+        }
+    }
+    for (Subject subject : duplicatesRoom
+            ) {
+        if (subject.getHour() == predmet.getHour()){
+            System.out.println("Předmět " + subject.getName() + " je v tento den, v této místnosti v této hodině("+subject.getHour()+")");
+            System.out.println("Zadej jinou hodinu");
+            predmet.setHour(setNewHour(subject.getHour()));
+            compareHour(predmet);
+            break;
+
+        }
+    }
+
+}
+
 
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
