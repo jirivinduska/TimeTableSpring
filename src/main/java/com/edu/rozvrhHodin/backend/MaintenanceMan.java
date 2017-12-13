@@ -8,6 +8,8 @@ import com.edu.rozvrhHodin.service.ServiceLocator;
 import sun.nio.cs.StandardCharsets;
 
 import javax.persistence.EntityManager;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.DayOfWeek;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -102,33 +104,66 @@ public class MaintenanceMan {
              ) {
 
 
-                StudentSubject studentSubject1 = new StudentSubject();
-                studentSubject1.setSubject(pr1);
- studentSubject1.setStudent(student);
- studentSubjects.add(studentSubject1);
+            StudentSubject studentSubject1 = new StudentSubject();
+            studentSubject1.setSubject(pr1);
+            studentSubject1.setStudent(student);
+            studentSubject1.setClassHour(pr1.getHour());
+            studentSubject1.setWeekday(pr1.getWeekday());
+            studentSubject1.setModificationDate(Calendar.getInstance());
+            studentSubjects.add(studentSubject1);
+
             StudentSubject studentSubject2 = new StudentSubject();
             studentSubject2.setSubject(pr2);
             studentSubject2.setStudent(student);
+            studentSubject2.setClassHour(pr2.getHour());
+            studentSubject2.setWeekday(pr2.getWeekday());
+            studentSubject2.setModificationDate(Calendar.getInstance());
             studentSubjects.add(studentSubject2);
 
 
+            StudentSubject studentSubject3 = new StudentSubject();
+            studentSubject3.setSubject(pr3);
+            studentSubject3.setStudent(student);
+            studentSubject3.setClassHour(pr3.getHour());
+            studentSubject3.setWeekday(pr3.getWeekday());
+            studentSubject3.setModificationDate(Calendar.getInstance());
+            studentSubjects.add(studentSubject3);
+
+            StudentSubject studentSubject4 = new StudentSubject();
+            studentSubject4.setSubject(pr4);
+            studentSubject4.setStudent(student);
+            studentSubject4.setClassHour(pr4.getHour());
+            studentSubject4.setWeekday(pr4.getWeekday());
+            studentSubject4.setModificationDate(Calendar.getInstance());
+            studentSubjects.add(studentSubject4);
+
+            StudentSubject studentSubject5 = new StudentSubject();
+            studentSubject5.setSubject(pr5);
+            studentSubject5.setStudent(student);
+            studentSubject5.setClassHour(pr5.getHour());
+            studentSubject5.setWeekday(pr5.getWeekday());
+            studentSubject5.setModificationDate(Calendar.getInstance());
+            studentSubjects.add(studentSubject5);
+
+
         }
 
 
+    for (StudentSubject sS : studentSubjects
+            ) {
+        entityManager.persist(sS);
 
-        for (StudentSubject sS : studentSubjects
-                ) {
-            entityManager.persist(sS);
+    }
 
-        }
 
         entityManager.flush();
         commitTransaction();
-        endTransaction();
+    //    endTransaction();
 
     }
 
     public void addStudent() {
+        startTransaction();
         System.out.println("Zadej přihlašovací jméno");
         String username = usernameInput();
         System.out.println("Zadej jméno studenta");
@@ -139,6 +174,8 @@ public class MaintenanceMan {
         String email = emailInput();
         Student student = new Student(username, firstname, lastname, email);
         entityManager.persist(student);
+        commitTransaction();
+      //  endTransaction();
     }
 
     public void addSubject() {
@@ -300,5 +337,35 @@ public class MaintenanceMan {
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
+    }
+
+    public boolean mainManage(){
+        System.out.println("Zadej jmeno metody");
+        String string =  sc.nextLine();
+
+        if (string.equals("end"))
+            return false;
+
+            try {
+                Method method = this.getClass().getDeclaredMethod(string);
+                try {
+                    method.invoke(this);
+                } catch (InvocationTargetException e) {
+                    //throw new RuntimeException(e);
+                    System.out.println("Not such class");
+                  return mainManage();
+                }
+            } catch (NoSuchMethodException e) {
+               // throw new RuntimeException(e);
+                System.out.println("Not such method");
+                return mainManage();
+            } catch (IllegalAccessException e) {
+               // throw new RuntimeException(e);
+                System.out.println("Illegal Acces");
+                return mainManage();
+            }
+
+            return true;
+
     }
 }

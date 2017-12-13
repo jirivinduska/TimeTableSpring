@@ -12,8 +12,9 @@ public class ConsoleWriter {
         System.out.println("5 - Editace účtu studenta");
         System.out.println("6 - Editace předmětu");
         System.out.println("7 - Deaktivace studenta");
-        System.out.println("8 - Přihlášení/Odhlášení studentů z předmětu");
-        System.out.println("9 - Konec");
+        System.out.println("8 - Přihlášení studenta na předmětu");
+        System.out.println("9 - Odhlášení studenta z předmětu");
+        System.out.println("0 - Konec");
     }
     public static void informationWriter(){
         System.out.println("1 - Zobrazení rozvrhu studenta");

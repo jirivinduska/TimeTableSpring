@@ -8,6 +8,8 @@ import com.edu.rozvrhHodin.repository.entity.Subject;
 import com.edu.rozvrhHodin.service.ServiceLocator;
 
 import javax.persistence.EntityManager;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.DayOfWeek;
 import java.util.*;
 
@@ -19,11 +21,14 @@ public class Main {
 
 
       MaintenanceMan mM = new MaintenanceMan();
+        while(mM.mainManage())
 
-     mM.initMain();
+        mM.endTransaction();
 
-      //  mM.addStudent();
-     //  mM.addSubject();
+//     mM.initMain();
+
+        //  mM.addStudent();
+        //   mM.addSubject();
 
      /*   List<Subject> predmets = new ArrayList<Subject>();
         Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře", 1, DayOfWeek.MONDAY, 1);
@@ -36,7 +41,7 @@ public class Main {
         predmets.add(pr4);
 */
 
-     //   List<Student> students = new ArrayList<Student>();
+        //   List<Student> students = new ArrayList<Student>();
 
         //Vytváření studentů
 /*        Student st1 = new Student("st1","Bernard","Škorpík","Bernard@skorpik.cz");
