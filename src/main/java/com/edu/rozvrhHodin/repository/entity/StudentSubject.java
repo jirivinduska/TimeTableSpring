@@ -24,7 +24,7 @@ public class StudentSubject implements Serializable {
     private DayOfWeek weekday;
 
     @Column(name = "modification_date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar modificationDate;
 
     public DayOfWeek getWeekday() {

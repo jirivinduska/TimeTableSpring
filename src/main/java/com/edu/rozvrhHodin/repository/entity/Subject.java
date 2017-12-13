@@ -25,10 +25,10 @@ public class Subject {
     @Column(name="room_number")
     private int roomNo;
 
-    @Transient
+    @Enumerated(EnumType.STRING)
     private DayOfWeek weekday;
 
-    @Transient
+
     private int hour;
 
     @OneToMany(mappedBy = "subject")

@@ -18,12 +18,23 @@ public class Main {
     public static void main(String[] args) {
 
 
-       MaintenanceMan mM = new MaintenanceMan();
+      MaintenanceMan mM = new MaintenanceMan();
 
-      //  mM.initMain();
+     mM.initMain();
 
       //  mM.addStudent();
-       mM.addSubject();
+     //  mM.addSubject();
+
+     /*   List<Subject> predmets = new ArrayList<Subject>();
+        Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře", 1, DayOfWeek.MONDAY, 1);
+        predmets.add(pr1);
+        Subject pr2 = new Subject("INAR1", "Teorie automatického řízení I", "Tomáš Jedno", 1, DayOfWeek.MONDAY, 2);
+        predmets.add(pr2);
+        Subject pr3 = new Subject("INVKM", "Vybrané kapitoly z matematiky", "Kamil Čůral", 3, DayOfWeek.TUESDAY, 4);
+        predmets.add(pr3);
+        Subject pr4 = new Subject("INZM", "Základy mechatroniky", "Jarmila Okapová", 1, DayOfWeek.THURSDAY, 4);
+        predmets.add(pr4);
+*/
 
      //   List<Student> students = new ArrayList<Student>();
 
@@ -43,8 +54,41 @@ public class Main {
             System.out.format(leftAlignFormat, student.getUserName(), student.getFirstName(),student.getLastName(),student.getEmail());
         }
         System.out.format("+-----------------+-----------------+-----------------+---------------------------+%n");*/
+/*int[][] cisla= new int[6][6];
+String[][] timetable = new String[6][7];
+timetable[0][0] = "   xxx ";
+for (int i = 1;i<timetable.length;i++){
+    timetable[i][0]=DayOfWeek.of(i).toString();
 
-      //  ServiceLocator.shutdown();
+}
+     for (int j = 1;j<timetable[0].length;j++) {
+            int time = 7+ j;
+                    timetable[0][j]=String.format("  %d - %d ",time,time+1);
+  }
+
+        for (int i = 1;i<timetable.length;i++){
+            for (int j = 1;j<timetable[i].length;j++){
+
+                    for (Subject subject : predmets
+                            ) {
+                        if (i == subject.getWeekday().getValue()) {
+                            if (j == subject.getHour())
+                                timetable[i][j] = subject.getAbrev();
+                        }
+                    }
+            }
+        }
+        for (int i = 0;i<timetable.length;i++){
+            for (int j = 0;j<timetable[i].length;j++){
+                String string = timetable[i][j];
+                System.out.printf("%-10s|", string);
+            }
+            System.out.println();
+        }*/
+
+
+
+        ServiceLocator.shutdown();
 
     }
 
