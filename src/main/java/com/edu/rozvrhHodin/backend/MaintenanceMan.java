@@ -98,17 +98,21 @@ public class MaintenanceMan {
 
         }
 
-            StudentSubject studentSubject1 = new StudentSubject();
+        for (Student student:students
+             ) {
+
+
+                StudentSubject studentSubject1 = new StudentSubject();
+                studentSubject1.setSubject(pr1);
+ studentSubject1.setStudent(student);
+ studentSubjects.add(studentSubject1);
             StudentSubject studentSubject2 = new StudentSubject();
-
-            studentSubject1.setStudent(st1);
-            studentSubject1.setSubject(pr1);
-            studentSubjects.add(studentSubject1);
-
-
-            studentSubject2.setStudent(st1);
             studentSubject2.setSubject(pr2);
+            studentSubject2.setStudent(student);
             studentSubjects.add(studentSubject2);
+
+
+        }
 
 
 
