@@ -12,7 +12,7 @@ import java.util.Set;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "user_name")
     private String userName;
     @Column(name = "first_name")
@@ -26,6 +26,10 @@ public class Student {
 
     @OneToMany(mappedBy = "student")
     public Set<StudentSubject> studentSubjects = new HashSet<StudentSubject>();
+
+    public Student(){
+
+    }
 
     public Student(String userName, String firstName, String lastName, String email) {
 
@@ -44,17 +48,17 @@ public class Student {
         this.studentSubjects = studentSubjects;
     }
 
-    public boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void deactivate() {
+        this.active = false;
     }
 
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

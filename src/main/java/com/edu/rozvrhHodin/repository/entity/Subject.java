@@ -12,10 +12,10 @@ import java.util.*;
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(length = 5)
-    private String abrev;
+    private String abbrev;
 
     private String name;
 
@@ -34,9 +34,13 @@ public class Subject {
     @OneToMany(mappedBy = "subject")
     public Set<StudentSubject> studentSubjectSet = new HashSet<StudentSubject>();
 
-    public Subject(String abrev, String name, String lectorName, int roomNo, DayOfWeek weekday, int hour) {
+    public Subject(){
 
-        this.abrev = abrev;
+    }
+
+    public Subject(String abbrev, String name, String lectorName, int roomNo, DayOfWeek weekday, int hour) {
+
+        this.abbrev = abbrev;
         this.name = name;
         this.lectorName = lectorName;
         this.roomNo = roomNo;
@@ -45,12 +49,8 @@ public class Subject {
         this.hour = hour;
     }
 
-    public Subject(String abrev, String name) {
-        this.abrev = abrev;
-        this.name = name;
-    }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -66,12 +66,12 @@ public class Subject {
         this.id = id;
     }
 
-    public String getAbrev() {
-        return abrev;
+    public String getAbbrev() {
+        return abbrev;
     }
 
-    public void setAbrev(String abrev) {
-        this.abrev = abrev;
+    public void setAbbrev(String abrev) {
+        this.abbrev = abrev;
     }
 
     public String getName() {
@@ -118,7 +118,7 @@ public class Subject {
     @Override
     public String toString() {
         return "Predmet{" +
-                "abrev='" + abrev + '\'' +
+                "abrev='" + abbrev + '\'' +
                 ", name='" + name + '\'' +
                 ", lectorName='" + lectorName + '\'' +
                 ", roomNo=" + roomNo +

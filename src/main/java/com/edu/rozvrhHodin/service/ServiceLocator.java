@@ -13,14 +13,38 @@ import javax.persistence.Persistence;
 
 public class ServiceLocator {
 
-    private static final String PERSISTENCE_UNIT_NAME = "eshop";
+    private static final String PERSISTENCE_UNIT_NAME = "rozvrh";
 
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
     private static EntityManagerFactory entityManagerFactory;
+    private static StudentService studentService;
+    private static SubjectService subjectService;
+    private static StudentSubjectService studentSubjectService;
 
     private ServiceLocator() {
 
+    }
+    public static StudentSubjectService getStudentSubjectService(){
+        if (studentSubjectService == null) {
+            studentSubjectService = new StudentSubjectServiceImpl();
+        }
+
+        return studentSubjectService;
+    }
+    public static StudentService getStudentService() {
+        if (studentService == null) {
+            studentService = new StudentServiceImpl();
+        }
+
+        return studentService;
+    }
+    public static SubjectService getSubjectService() {
+        if (subjectService == null) {
+            subjectService = new SubjectServiceImpl();
+        }
+
+        return subjectService;
     }
 
     public static EntityManager createEntityManager() {

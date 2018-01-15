@@ -2,28 +2,25 @@ package com.edu.rozvrhHodin;
 
 
 
-import com.edu.rozvrhHodin.backend.MaintenanceMan;
-import com.edu.rozvrhHodin.repository.entity.Student;
-import com.edu.rozvrhHodin.repository.entity.Subject;
+import com.edu.rozvrhHodin.backend.ConsoleBackend;
+import com.edu.rozvrhHodin.backend.ConsoleService;
+import com.edu.rozvrhHodin.frontend.ConsolePresentation;
 import com.edu.rozvrhHodin.service.ServiceLocator;
-
-import javax.persistence.EntityManager;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.time.DayOfWeek;
-import java.util.*;
 
 //https://stackoverflow.com/questions/15215326/how-can-i-create-table-using-ascii-in-a-console
 
 public class Main {
 
     public static void main(String[] args) {
+        ConsoleBackend consoleBackend = new ConsoleBackend();
+
+       ConsoleService.initConsole();
+        ConsolePresentation.consoleWelcome();
+        //  while(consoleBackend.methodReader());
+ServiceLocator.getStudentService().printStudentBySubject(1l);
+ServiceLocator.getSubjectService().printSubjectByStudent(1l);
 
 
-      MaintenanceMan mM = new MaintenanceMan();
-        while(mM.mainManage())
-
-        mM.endTransaction();
 
 //     mM.initMain();
 
