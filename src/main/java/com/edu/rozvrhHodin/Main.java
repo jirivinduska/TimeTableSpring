@@ -16,9 +16,9 @@ public class Main {
 
        ConsoleService.initConsole();
         ConsolePresentation.consoleWelcome();
-        //  while(consoleBackend.methodReader());
-ServiceLocator.getStudentService().printStudentBySubject(1l);
-ServiceLocator.getSubjectService().printSubjectByStudent(1l);
+        while(consoleBackend.methodReader());
+//ServiceLocator.getStudentService().printStudentBySubject(1l);
+//ServiceLocator.getSubjectService().printTimeTableStudent(1l);
 
 
 

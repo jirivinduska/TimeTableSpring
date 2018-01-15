@@ -3,6 +3,7 @@ package com.edu.rozvrhHodin.presentation;
 import com.edu.rozvrhHodin.repository.entity.Student;
 import com.edu.rozvrhHodin.repository.entity.Subject;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 public class SubjectPresentationImpl implements SubjectPresentation {
@@ -18,5 +19,44 @@ public class SubjectPresentationImpl implements SubjectPresentation {
 
         }
         System.out.format("+------+----------+----------------------------------------------------+-----------------+--------+-----------------+------+%n");
+    }
+
+
+    public void printTimeTable(List<Subject> subjects) {
+        String[][] timetable = new String[6][7];
+        timetable[0][0] = "-Rozvrh-";
+        for (int i = 1;i<timetable.length;i++){
+            timetable[i][0]= DayOfWeek.of(i).toString();
+
+        }
+        for (int j = 1;j<timetable[0].length;j++) {
+            int time = 7 + j;
+            timetable[0][j]=String.format("%d - %d ",time,time+1);
+        }
+
+        for (int i = 1;i<timetable.length;i++){
+            for (int j = 1;j<timetable[i].length;j++){
+
+                for (Subject subject : subjects
+                        ) {
+                    if (i == subject.getWeekday().getValue()) {
+                        if (j == subject.getHour())
+                            timetable[i][j] = subject.getAbbrev();
+                    }
+                }
+            }
+        }
+        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
+        for (int i = 0;i<timetable.length;i++){
+            for (int j = 0;j<timetable[i].length;j++){
+                String string = timetable[i][j];
+                if (string == null)
+                    System.out.printf("|      %-10s |", " xxx ");
+                else
+                    System.out.printf("|      %-10s |", string);
+            }
+            System.out.println();
+        }
+        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
     }
 }

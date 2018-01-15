@@ -10,6 +10,8 @@ public interface SubjectService {
     void printSubjectByID(Long id);
 
     void printSubjectByStudent(Long id);
+    void printTimeTableStudent(Long id);
+    void printTimeTableStudents(Long id1,Long id2);
 
     void addSubject();
 

@@ -55,44 +55,9 @@ public class ConsoleBackend {
     }
     private void findStudent(){
         System.out.println("Podle čeho chcete hledat? (ID,firstName,lastName, userName nebo firstLastName): ");
-        findStudentSwitch();
+        ConsoleService.findStudentSwitch();
     }
-    private boolean findStudentSwitch(){
-        String string = sc.nextLine();
-        switch (string) {
-            case "ID":
-                System.out.println("Zadejte ID: ");
-                Long id = ConsoleService.idInput();
-                ServiceLocator.getStudentService().printStudentByID(id);
-                break;
-            case "firstName":
-                System.out.println("Zadejte jméno: ");
-                String firstName = ConsoleService.nameInput();
-                ServiceLocator.getStudentService().printStudentByFirstName(firstName);
-                break;
-            case "lastName":
-                System.out.println("Zadejte příjmení: ");
-                String lastName = ConsoleService.nameInput();
-                ServiceLocator.getStudentService().printStudentByFirstName(lastName);
-                break;
-            case "userName":
-                System.out.println("Zadejte přihlašovací jméno: ");
-                String userName = ConsoleService.usernameInput();
-                ServiceLocator.getStudentService().printStudentByUserName(userName);
-                break;
-            case "firstLastName":
-                System.out.println("Zadejte jméno: ");
-                String firstName1 = ConsoleService.nameInput();
-                System.out.println("Zadejte příjmení: ");
-                String lastName1 = ConsoleService.nameInput();
-                ServiceLocator.getStudentService().printStudentByFistNameLastName(firstName1,lastName1);
-                break;
-            default:
-                System.out.println("Musíte zadat: ID, firstName, lastName, userName nebo firstLastName");
-                return findStudentSwitch();
-        }
-        return true;
-    }
+
 
     private void findSubject(){
 

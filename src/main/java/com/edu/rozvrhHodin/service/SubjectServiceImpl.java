@@ -38,6 +38,18 @@ public class SubjectServiceImpl implements SubjectService {
         PresentationLocator.getSubjectPresentation().printSubjects(subjects);
     }
 
+
+    public void printTimeTableStudent(Long id) {
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByStudent(id);
+        ServiceLocator.getStudentService().printStudentByID(id);
+        PresentationLocator.getSubjectPresentation().printTimeTable(subjects);
+    }
+
+
+    public void printTimeTableStudents(Long id1,Long id2) {
+
+    }
+
     public void addSubject() {
         System.out.println("Zadej zkratku předmětu");
         String abrev = abrevInput();
