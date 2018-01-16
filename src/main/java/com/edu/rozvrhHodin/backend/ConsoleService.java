@@ -33,7 +33,7 @@ public class ConsoleService {
     public static String emailInput() {
         String email = sc.nextLine();
         if (!validate(email)) {
-            System.out.println("Zadaný text není email!");
+            System.out.println("Zadaný text není email! Očekává vstup ve tvaru email@email.cz");
             return emailInput();
         }
         return email;
@@ -122,6 +122,11 @@ public static Long idInput(){
             System.out.println("Musíš zadat den ve tvaru: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY");
             return dayOfWeekInput();
         }
+        if (dayOfWeek.compareTo(DayOfWeek.SATURDAY)==0||dayOfWeek.compareTo(DayOfWeek.SUNDAY)==0 ){
+            System.out.println("Vyučování se nekoná o víkendu!");
+            return dayOfWeekInput();
+        }
+
         return dayOfWeek;
     }
 
@@ -151,7 +156,7 @@ public static Long idInput(){
             case "lastName":
                 System.out.println("Zadejte příjmení: ");
                 String lastName = ConsoleService.nameInput();
-                ServiceLocator.getStudentService().printStudentByFirstName(lastName);
+                ServiceLocator.getStudentService().printStudentByLastName(lastName);
                 break;
             case "userName":
                 System.out.println("Zadejte přihlašovací jméno: ");
@@ -170,6 +175,61 @@ public static Long idInput(){
                 return findStudentSwitch();
         }
         return true;
+    }
+    public static void findStudentSubjectSwitch(Long id){
+        String string = sc.nextLine();
+        if (string.equals("true"))
+            ServiceLocator.getSubjectService().printTimeTableStudent(id);
+        else
+            ServiceLocator.getSubjectService().printSubjectByStudent(id);
+
+
+    }
+
+    public static boolean findSubjectSwitch(){
+        String string = sc.nextLine();
+        switch (string){
+            case "ID":
+                System.out.println("Zadejte ID: ");
+                Long id = ConsoleService.idInput();
+                ServiceLocator.getSubjectService().printSubjectByID(id);
+                break;
+            case "abbrev":
+                System.out.println("Zadejte abbrev: ");
+                String abbrev = ConsoleService.abrevInput();
+                ServiceLocator.getSubjectService().printSubjectByAbbrev(abbrev);
+                break;
+            case "name":
+                System.out.println("Zadejte jméno předmětu: ");
+                String name = ConsoleService.nameInput();
+                ServiceLocator.getSubjectService().printSubjectByName(name);
+                break;
+            case "hour":
+                System.out.println("Zadejte hodinu předmětu: ");
+                int hour = ConsoleService.hourInput();
+                ServiceLocator.getSubjectService().printSubjectByHour(hour);
+                break;
+            case "lectorName":
+                System.out.println("Zadejte vyučujícího předmětu: ");
+                String lectorName = ConsoleService.lectorNameInput();
+                ServiceLocator.getSubjectService().printSubjectByLectorName(lectorName);
+                break;
+            case "roomNo":
+                System.out.println("Zadejte číslo místnosti předmětu: ");
+                int roomNoInput = ConsoleService.roomNoInput();
+                ServiceLocator.getSubjectService().printSubjectByRoomNo(roomNoInput);
+                break;
+
+            case "weekday":
+                System.out.println("Zadejte den předmětu(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY): ");
+                DayOfWeek dayOfWeek = ConsoleService.dayOfWeekInput();
+                ServiceLocator.getSubjectService().printSubjectByDayOfWeek(dayOfWeek);
+                break;
+            default:
+                System.out.println("Musíte zadat: ID, abbrev, name, hour, lectorName, roomNo, weekday");
+                return findSubjectSwitch();
+        }
+            return true;
     }
 
     public static void initConsole(){

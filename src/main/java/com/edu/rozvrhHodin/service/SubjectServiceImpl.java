@@ -21,17 +21,45 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     public void printSubjectByName(String name) {
-
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByName(name);
+        PresentationLocator.getSubjectPresentation().printSubjects(subjects);
     }
 
     public void printSubjectByAbbrev(String abbrev) {
-
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByAbbrev(abbrev);
+        PresentationLocator.getSubjectPresentation().printSubjects(subjects);
     }
 
     public void printSubjectByID(Long id) {
-
+        List<Subject> subjects = new ArrayList<Subject>();
+        Subject subject = RepositoryLocator.getSubjectRepository().findByID(id);
+        subjects.add(subject);
+        PresentationLocator.getSubjectPresentation().printSubjects(subjects);
     }
 
+
+    public void printSubjectByRoomNo(int roomNo) {
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByRoomNo(roomNo);
+        PresentationLocator.getSubjectPresentation().printSubjects(subjects);
+    }
+
+
+    public void printSubjectByHour(int hour) {
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByHour(hour);
+        PresentationLocator.getSubjectPresentation().printSubjects(subjects);
+    }
+
+
+    public void printSubjectByDayOfWeek(DayOfWeek dayOfWeek) {
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByWeekday(dayOfWeek);
+        PresentationLocator.getSubjectPresentation().printSubjects(subjects);
+    }
+
+
+    public void printSubjectByLectorName(String lectorName) {
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByLectorName(lectorName);
+        PresentationLocator.getSubjectPresentation().printSubjects(subjects);
+    }
 
     public void printSubjectByStudent(Long id) {
         List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByStudent(id);
@@ -47,7 +75,16 @@ public class SubjectServiceImpl implements SubjectService {
 
 
     public void printTimeTableStudents(Long id1,Long id2) {
-
+        List<Subject> subjects1 = RepositoryLocator.getSubjectRepository().findByStudent(id1);
+        List<Subject> subjects2 = RepositoryLocator.getSubjectRepository().findByStudent(id2);
+        List<Subject> subjects = subjects1;
+        for (Subject subject:subjects2){
+            if (!subjects.contains(subject))
+                subjects.add(subject);
+        }
+        ServiceLocator.getStudentService().printStudentByID(id1);
+        ServiceLocator.getStudentService().printStudentByID(id2);
+        PresentationLocator.getSubjectPresentation().printTimeTable(subjects);
     }
 
     public void addSubject() {
@@ -68,13 +105,6 @@ public class SubjectServiceImpl implements SubjectService {
         saveSubject(subject);
     }
 
-    public void editSubjectByName(String name) {
-
-    }
-
-    public void editSubjectByAbbrev(String abbrev) {
-
-    }
 
     public void editSubjectByID(Long id) {
 
@@ -116,7 +146,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     private void compareHourAndDayOfWeek(Subject predmet) {
 
-        for (Subject subject : RepositoryLocator.getSubjectRepository().findByHourAndDayOfWeek(predmet.getHour(),predmet.getWeekday())
+        for (Subject subject : RepositoryLocator.getSubjectRepository().findByHourAndDayOfWeek(predmet.getHour(),predmet.getWeekday(),predmet.getRoomNo())
                 ) {
             if (subject.getHour() == predmet.getHour()) {
                 System.out.println("Předmět " + subject.getName() + " je v tento den ("+ subject.getWeekday().toString() +"), v této místnosti v této hodině(" + subject.getHour() + ")");

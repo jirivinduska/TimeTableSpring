@@ -19,7 +19,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         return entityManager.createQuery("from Subject", Subject.class).getResultList();
     }
 
-    public List<Subject> findByHourAndDayOfWeek(int hour, DayOfWeek dayOfWeek) {
+    public List<Subject> findByHourAndDayOfWeek(int hour, DayOfWeek dayOfWeek,int roomNo) {
         EntityManager entityManager = ServiceLocator.createEntityManager();
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -30,7 +30,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         List<Predicate> predicates = new ArrayList<Predicate>();
 
             predicates.add(cb.equal(subjectRoot.get("hour"), hour));
-
+        predicates.add(cb.equal(subjectRoot.get("roomNo"), roomNo));
         if (dayOfWeek != null) {
             predicates.add(cb.equal(subjectRoot.get("weekday"), dayOfWeek));
         }
@@ -81,6 +81,62 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         Join<Subject,StudentSubject> studentSubjectJoin = subjectRoot.join("studentSubjectSet");
 
         cq.where(cb.equal(studentSubjectJoin.get("student"),id));
+
+        return entityManager.createQuery(cq).getResultList();
+    }
+
+
+    public List<Subject> findByHour(int hour) {
+        EntityManager entityManager = ServiceLocator.createEntityManager();
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Subject> cq = cb.createQuery(Subject.class);
+
+        Root<Subject> subjectRoot = cq.from(Subject.class);
+
+        cq.select(subjectRoot).where(cb.equal(subjectRoot.get("hour"), hour));
+
+        return entityManager.createQuery(cq).getResultList();
+    }
+
+
+    public List<Subject> findByWeekday(DayOfWeek weekday) {
+        EntityManager entityManager = ServiceLocator.createEntityManager();
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Subject> cq = cb.createQuery(Subject.class);
+
+        Root<Subject> subjectRoot = cq.from(Subject.class);
+
+        cq.select(subjectRoot).where(cb.equal(subjectRoot.get("weekday"), weekday));
+
+        return entityManager.createQuery(cq).getResultList();
+    }
+
+
+    public List<Subject> findByLectorName(String lectorname) {
+        EntityManager entityManager = ServiceLocator.createEntityManager();
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Subject> cq = cb.createQuery(Subject.class);
+
+        Root<Subject> subjectRoot = cq.from(Subject.class);
+
+        cq.select(subjectRoot).where(cb.equal(subjectRoot.get("lectorName"), lectorname));
+
+        return entityManager.createQuery(cq).getResultList();
+    }
+
+
+    public List<Subject> findByRoomNo(int roomNo) {
+        EntityManager entityManager = ServiceLocator.createEntityManager();
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Subject> cq = cb.createQuery(Subject.class);
+
+        Root<Subject> subjectRoot = cq.from(Subject.class);
+
+        cq.select(subjectRoot).where(cb.equal(subjectRoot.get("roomNo"), roomNo));
 
         return entityManager.createQuery(cq).getResultList();
     }

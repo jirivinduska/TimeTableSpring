@@ -42,6 +42,7 @@ public class StudentServiceImpl implements StudentService {
 
     public void printStudentBySubject(Long id) {
         List<Student> students = RepositoryLocator.getStudentRepository().findBySubject(id);
+        ServiceLocator.getSubjectService().printSubjectByID(id);
         PresentationLocator.getStudentPresentation().printStudents(students);
     }
 
@@ -61,32 +62,7 @@ public class StudentServiceImpl implements StudentService {
         saveStudent(student);
     }
 
-    public void deactivateStudentByFirstName(String firstName) {
-        List<Student> students = RepositoryLocator.getStudentRepository().findByFirstName(firstName);
-        for (Student student:students
-             ) {
-            student.deactivate();
-            saveStudent(student);
-        }
-    }
 
-    public void deactivateStudentByLastName(String lastName) {
-        List<Student> students = RepositoryLocator.getStudentRepository().findByLastName(lastName);
-        for (Student student:students
-                ) {
-            student.deactivate();
-            saveStudent(student);
-        }
-    }
-
-    public void deactivateStudentByFirstNameLastName(String firstName, String lastName) {
-        List<Student> students = RepositoryLocator.getStudentRepository().findByFirstNameAndLastName(firstName,lastName);
-        for (Student student:students
-                ) {
-            student.deactivate();
-            saveStudent(student);
-        }
-    }
 
     public void addStudent() {
         System.out.println("Zadej přihlašovací jméno");
@@ -105,17 +81,7 @@ public class StudentServiceImpl implements StudentService {
 
     }
 
-    public void editStudentByFirstName(String firstName) {
 
-    }
-
-    public void editStudentByLastName(String lastName) {
-
-    }
-
-    public void editStudentByFirstNameLastName(String firstName, String lastName) {
-
-    }
 
     public void prepareData() {
         List<Student> students = new ArrayList<Student>();

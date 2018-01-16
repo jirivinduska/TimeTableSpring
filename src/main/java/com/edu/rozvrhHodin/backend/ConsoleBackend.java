@@ -1,6 +1,7 @@
 package com.edu.rozvrhHodin.backend;
 
 import com.edu.rozvrhHodin.frontend.ConsolePresentation;
+import com.edu.rozvrhHodin.repository.RepositoryLocator;
 import com.edu.rozvrhHodin.service.ServiceLocator;
 import com.edu.rozvrhHodin.service.StudentService;
 
@@ -54,13 +55,14 @@ public class ConsoleBackend {
 
     }
     private void findStudent(){
-        System.out.println("Podle čeho chcete hledat? (ID,firstName,lastName, userName nebo firstLastName): ");
+        System.out.println("Podle čeho chcete hledat? (ID, firstName, lastName, userName nebo firstLastName): ");
         ConsoleService.findStudentSwitch();
     }
 
 
     private void findSubject(){
-
+        System.out.println("Podle čeho chcete hledat? (ID, abbrev, name, hour, lectorName, roomNo, weekday): ");
+        ConsoleService.findSubjectSwitch();
     }
 
     private void findAllStudents(){
@@ -75,11 +77,22 @@ public class ConsoleBackend {
 
     }
     private void findStudentSubject(){
+        System.out.println("Zadejte ID studenta:");
+        Long id;
+        id = ConsoleService.idInput();
+        System.out.println("Chete vypsat rozvrh studenta? (true/false)");
+        ConsoleService.findStudentSubjectSwitch(id);
 
     }
 
     private void findStudentsSubjects(){
-
+        System.out.println("Zadejte ID prvního studenta:");
+        Long id1;
+        id1 = ConsoleService.idInput();
+        System.out.println("Zadejte ID druhého studenta:");
+        Long id2;
+        id2 = ConsoleService.idInput();
+        ServiceLocator.getSubjectService().printTimeTableStudents(id1,id2);
     }
 
     private void findStudentsOnSubject(){
@@ -90,7 +103,10 @@ public class ConsoleBackend {
     }
 
     private void deactivateStudent(){
-
+        System.out.println("Zadejte ID studenta:");
+        Long id;
+        id = ConsoleService.idInput();
+        ServiceLocator.getStudentService().deactivateStudentByID(id);
     }
 
     private void addStudentToSubject(){
