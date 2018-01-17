@@ -19,7 +19,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         return entityManager.createQuery("from Subject", Subject.class).getResultList();
     }
 
-    public List<Subject> findByHourAndDayOfWeek(int hour, DayOfWeek dayOfWeek, int roomNo) {
+    public List<Subject> findByHourDayOfWeekAndRoomNo(int hour, DayOfWeek dayOfWeek, int roomNo) {
         EntityManager entityManager = ServiceLocator.createEntityManager();
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -36,6 +36,28 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         }
 
         cq.select(subjectRoot).where(predicates.toArray(new Predicate[]{}));
+
+        return entityManager.createQuery(cq).getResultList();
+    }
+
+
+    public List<Subject> findByStudentWeekDayAndHour(Long id, DayOfWeek dayOfWeek, int hour) {
+        EntityManager entityManager = ServiceLocator.createEntityManager();
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Subject> cq = cb.createQuery(Subject.class);
+
+        Root<Subject> subjectRoot = cq.from(Subject.class);
+        Join<Subject, StudentSubject> studentSubjectJoin = subjectRoot.join("studentSubjectSet");
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        predicates.add(cb.equal(subjectRoot.get("hour"), hour));
+        if (dayOfWeek != null) {
+            predicates.add(cb.equal(subjectRoot.get("weekday"), dayOfWeek));
+        }
+        predicates.add(cb.equal(studentSubjectJoin.get("student"), id));
+        cq.select(subjectRoot).where(predicates.toArray(new Predicate[]{}));
+
 
         return entityManager.createQuery(cq).getResultList();
     }

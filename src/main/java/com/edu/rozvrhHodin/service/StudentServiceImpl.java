@@ -1,6 +1,7 @@
 package com.edu.rozvrhHodin.service;
 
 import com.edu.rozvrhHodin.backend.ConsoleService;
+import com.edu.rozvrhHodin.frontend.ConsolePresentation;
 import com.edu.rozvrhHodin.presentation.PresentationLocator;
 import com.edu.rozvrhHodin.repository.RepositoryLocator;
 import com.edu.rozvrhHodin.repository.entity.Student;
@@ -70,13 +71,13 @@ public class StudentServiceImpl implements StudentService {
 
 
     public void addStudent() {
-        System.out.println("Zadej přihlašovací jméno");
+        ConsolePresentation.userNameInput(true);
         String username = usernameInput();
-        System.out.println("Zadej jméno studenta");
+        ConsolePresentation.firstNameInput(true);
         String firstname = nameInput();
-        System.out.println("Zadej přijmení studenta");
+        ConsolePresentation.lastNameInput(true);
         String lastname = nameInput();
-        System.out.println("Zadej email studenta");
+        ConsolePresentation.emailInput(true);
         String email = emailInput();
         Student student = new Student(username, firstname, lastname, email);
         saveStudent(student);
@@ -84,16 +85,16 @@ public class StudentServiceImpl implements StudentService {
 
     public void editStudentByID(Long id) {
         Student student = RepositoryLocator.getStudentRepository().findByID(id);
-        System.out.println("Zadej přihlašovací jméno, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.userNameInput(false);
         String username = editUsername(student.getUserName());
         student.setUserName(username);
-        System.out.println("Zadej jméno studenta, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.firstNameInput(false);
         String firstname = editName(student.getFirstName());
         student.setFirstName(firstname);
-        System.out.println("Zadej přijmení studenta, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.lastNameInput(false);
         String lastname = editName(student.getLastName());
         student.setLastName(lastname);
-        System.out.println("Zadej email studenta, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.emailInput(false);
         String email = editEmail(student.getEmail());
         student.setEmail(email);
         saveStudent(student);

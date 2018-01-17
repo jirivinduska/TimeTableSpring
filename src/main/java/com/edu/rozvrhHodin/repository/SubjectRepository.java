@@ -8,7 +8,8 @@ import java.util.List;
 public interface SubjectRepository {
     
     List<Subject> findAllSubject();
-    List<Subject> findByHourAndDayOfWeek(int hour, DayOfWeek dayOfWeek,int roomNo);
+    List<Subject> findByHourDayOfWeekAndRoomNo(int hour, DayOfWeek dayOfWeek,int roomNo);
+    List<Subject> findByStudentWeekDayAndHour(Long id,DayOfWeek dayOfWeek,int hour);
     Subject findByID(Long id);
     List<Subject> findByAbbrev(String abbrev);
     List<Subject> findByName(String name);

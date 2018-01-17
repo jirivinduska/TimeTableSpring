@@ -40,7 +40,6 @@ public class StudentSubjectRepositoryImpl implements StudentSubjectRepository {
 
         entityManager.persist(studentSubject);
 
-
         entityManager.getTransaction().commit();
         entityManager.close();
     }

@@ -1,5 +1,7 @@
 package com.edu.rozvrhHodin.frontend;
 
+import com.edu.rozvrhHodin.repository.entity.Subject;
+
 public class ConsolePresentation {
     public static void consoleWelcome() {
         System.out.println("-----------------------------------------------WELCOME-----------------------------------------------");
@@ -37,4 +39,77 @@ public class ConsolePresentation {
     public static void cannot() {
         System.out.println("Zadaný student je neaktivní, nelze ho přidat na předmět");
     }
+
+    public static void userNameInput(boolean input) {
+        if (input)
+            System.out.println("Zadej přihlašovací jméno");
+        else
+            System.out.println("Zadej přihlašovací jméno, prázdný text pro pokračování bez změny.");
+    }
+
+    public static void firstNameInput(boolean input) {
+        if (input)
+            System.out.println("Zadej jméno studenta");
+        else
+            System.out.println("Zadej jméno studenta, prázdný text pro pokračování bez změny.");
+    }
+
+    public static void lastNameInput(boolean input) {
+        if (input)
+            System.out.println("Zadej příjmení studenta");
+        else
+            System.out.println("Zadej přijmení studenta, prázdný text pro pokračování bez změny.");
+    }
+
+    public static void emailInput(boolean input) {
+        if (input)
+            System.out.println("Zadej email studenta");
+        else
+            System.out.println("Zadej email studenta, prázdný text pro pokračování bez změny.");
+    }
+    public static void abbrevInput(boolean input){
+        if (input)
+            System.out.println("Zadej zkratku předmětu");
+        else
+            System.out.println("Zadej zkratku předmětu, prázdný text pro pokračování bez změny.");
+    }
+    public static void nameInput(boolean input){
+        if (input)
+            System.out.println("Zadej název předmětu");
+        else
+            System.out.println("Zadej název předmětu, prázdný text pro pokračování bez změny.");
+    }
+    public static void lectorNameInput(boolean input){
+        if (input)
+            System.out.println("Zadej jméno vyučujícího");
+        else
+            System.out.println("Zadej jméno vyučujícího, prázdný text pro pokračování bez změny.");
+    }
+    public static void roomNoInput(boolean input){
+        if (input)
+            System.out.println("Zadej číslo učebny");
+        else
+            System.out.println("Zadej číslo učebny, prázdný text pro pokračování bez změny.");
+    }
+    public static void dayOfWeekInput(boolean input){
+        if (input)
+            System.out.println("Zadej den, kdy se bude předmět konat");
+        else
+            System.out.println("Zadej den, kdy se bude předmět konat, prázdný text pro pokračování bez změny.");
+    }
+    public static void hourInput(boolean input){
+        if (input)
+            System.out.println("Zadej hodinu, kdy se bude předmět konat");
+        else
+            System.out.println("Zadej hodinu, kdy se bude předmět konat, prázdný text pro pokračování bez změny.");
+    }
+    public static void compateHourDayOfWeekRoomNo(Subject subject){
+        System.out.println("Předmět " + subject.getName() + " je v tento den (" + subject.getWeekday().toString() + "), v této místnosti v této hodině(" + subject.getHour() + ").");
+        System.out.println("Zadej jinou hodinu:");
+    }
+    public static void compareHourDayOdWeekStudent(Subject subject){
+        System.out.println("Student v tento den a hodinu již má předmět.");
+        System.out.println("Zadej jiný předmět:");
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.edu.rozvrhHodin.service;
 
+import com.edu.rozvrhHodin.backend.ConsoleService;
 import com.edu.rozvrhHodin.frontend.ConsolePresentation;
 import com.edu.rozvrhHodin.repository.RepositoryLocator;
 import com.edu.rozvrhHodin.repository.entity.Student;
@@ -19,10 +20,11 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
         Subject subject = RepositoryLocator.getSubjectRepository().findByID(idSubject);
         Student student = RepositoryLocator.getStudentRepository().findByID(idStudent);
         if (student.getActive()) {
-            studentSubject.setSubject(subject);
+            Subject newSubject = compareHourAndWeekDay(subject,student,false);
+            studentSubject.setSubject(newSubject);
             studentSubject.setStudent(student);
-            studentSubject.setWeekday(subject.getWeekday());
-            studentSubject.setClassHour(subject.getHour());
+            studentSubject.setWeekday(newSubject.getWeekday());
+            studentSubject.setClassHour(newSubject.getHour());
             studentSubject.setModificationDate(Calendar.getInstance());
             saveStudentSubject(studentSubject);
         } else
@@ -38,63 +40,94 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
     public void prepareData() {
         List<Student> students = RepositoryLocator.getStudentRepository().findAllStudents();
         List<Subject> subjects = RepositoryLocator.getSubjectRepository().findAllSubject();
-        List<StudentSubject> studentSubjects = new ArrayList<StudentSubject>();
-        Random random = new Random();
+
+
+
+     Random random = new Random();
         int i;
         for (Student student : students
                 ) {
             i = random.nextInt(5);
 
             StudentSubject studentSubject1 = new StudentSubject();
-            studentSubject1.setSubject(subjects.get(i));
+            Subject newSubject1 = compareHourAndWeekDay(subjects.get(i),student,true);
+            studentSubject1.setSubject(newSubject1);
             studentSubject1.setStudent(student);
-            studentSubject1.setClassHour(subjects.get(i).getHour());
-            studentSubject1.setWeekday(subjects.get(i).getWeekday());
+            studentSubject1.setClassHour(newSubject1.getHour());
+            studentSubject1.setWeekday(newSubject1.getWeekday());
             studentSubject1.setModificationDate(Calendar.getInstance());
-            studentSubjects.add(studentSubject1);
+            saveStudentSubject(studentSubject1);
 
             StudentSubject studentSubject2 = new StudentSubject();
-            studentSubject2.setSubject(subjects.get(i + 1));
+            Subject newSubject2 = compareHourAndWeekDay(subjects.get(i +1),student,true);
+            studentSubject2.setSubject(newSubject2);
             studentSubject2.setStudent(student);
-            studentSubject2.setClassHour(subjects.get(i + 1).getHour());
-            studentSubject2.setWeekday(subjects.get(i + 1).getWeekday());
+            studentSubject2.setClassHour(newSubject2.getHour());
+            studentSubject2.setWeekday(newSubject2.getWeekday());
             studentSubject2.setModificationDate(Calendar.getInstance());
-            studentSubjects.add(studentSubject2);
+            saveStudentSubject(studentSubject2);
 
 
             StudentSubject studentSubject3 = new StudentSubject();
-            studentSubject3.setSubject(subjects.get(i + 2));
+            Subject newSubject3 = compareHourAndWeekDay(subjects.get(i + 2), student, true);
+            studentSubject3.setSubject(newSubject3);
             studentSubject3.setStudent(student);
-            studentSubject3.setClassHour(subjects.get(i + 2).getHour());
-            studentSubject3.setWeekday(subjects.get(i + 2).getWeekday());
+            studentSubject3.setClassHour(newSubject3.getHour());
+            studentSubject3.setWeekday(newSubject3.getWeekday());
             studentSubject3.setModificationDate(Calendar.getInstance());
-            studentSubjects.add(studentSubject3);
+            saveStudentSubject(studentSubject3);
 
             StudentSubject studentSubject4 = new StudentSubject();
-            studentSubject4.setSubject(subjects.get(i + 3));
+            Subject newSubject4 = compareHourAndWeekDay(subjects.get(i + 3), student, true);
+            studentSubject4.setSubject(newSubject4);
             studentSubject4.setStudent(student);
-            studentSubject4.setClassHour(subjects.get(i + 3).getHour());
-            studentSubject4.setWeekday(subjects.get(i + 3).getWeekday());
+            studentSubject4.setClassHour(newSubject4.getHour());
+            studentSubject4.setWeekday(newSubject4.getWeekday());
             studentSubject4.setModificationDate(Calendar.getInstance());
-            studentSubjects.add(studentSubject4);
+            saveStudentSubject(studentSubject4);
 
             StudentSubject studentSubject5 = new StudentSubject();
-            studentSubject5.setSubject(subjects.get(i + 4));
+            Subject newSubject5 = compareHourAndWeekDay(subjects.get(i + 4),student,true);
+            studentSubject5.setSubject(newSubject5);
             studentSubject5.setStudent(student);
-            studentSubject5.setClassHour(subjects.get(i + 4).getHour());
-            studentSubject5.setWeekday(subjects.get(i + 4).getWeekday());
+            studentSubject5.setClassHour(newSubject5.getHour());
+            studentSubject5.setWeekday(newSubject5.getWeekday());
             studentSubject5.setModificationDate(Calendar.getInstance());
-            studentSubjects.add(studentSubject5);
+            saveStudentSubject(studentSubject5);
 
 
         }
-        for (StudentSubject sS : studentSubjects
-                ) {
-            saveStudentSubject(sS);
-        }
+
+
     }
 
     public void saveStudentSubject(StudentSubject studentSubject) {
         RepositoryLocator.getStudentSubjectRepository().saveStudentSubject(studentSubject);
     }
+
+    private Subject compareHourAndWeekDay(Subject subject, Student student, boolean prepare) {
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByStudentWeekDayAndHour(student.getId(), subject.getWeekday(), subject.getHour());
+        Long id;
+
+        if (!subjects.isEmpty()) {
+            ConsolePresentation.compareHourDayOdWeekStudent(subject);
+            if (prepare) {
+                id = gamble(subject.getId());
+            } else {
+                id = ConsoleService.idInput(subject.getId());
+            }
+            subject = RepositoryLocator.getSubjectRepository().findByID(id);
+            return compareHourAndWeekDay(subject, student, prepare);
+        }
+        return subject;
+    }
+
+    private Long gamble(Long id) {
+        Random random = new Random();
+        Long newId = Integer.toUnsignedLong(random.nextInt(9) + 1);
+        if (id.equals(newId))
+            return gamble(newId);
+        return newId;
+    }
 }
+

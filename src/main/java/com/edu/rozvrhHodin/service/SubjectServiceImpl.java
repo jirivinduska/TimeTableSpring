@@ -1,5 +1,6 @@
 package com.edu.rozvrhHodin.service;
 
+import com.edu.rozvrhHodin.frontend.ConsolePresentation;
 import com.edu.rozvrhHodin.presentation.PresentationLocator;
 import com.edu.rozvrhHodin.repository.RepositoryLocator;
 import com.edu.rozvrhHodin.repository.entity.Student;
@@ -92,48 +93,48 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     public void addSubject() {
-        System.out.println("Zadej zkratku předmětu");
+        ConsolePresentation.abbrevInput(true);
         String abbrev = abbrevInput();
-        System.out.println("Zadej název předmětu");
+        ConsolePresentation.nameInput(true);
         String name = nameInput();
-        System.out.println("Zadej jméno vyučujícího");
+        ConsolePresentation.lectorNameInput(true);
         String lectorName = lectorNameInput();
-        System.out.println("Zadej číslo učebny");
+        ConsolePresentation.roomNoInput(true);
         int roomNo = roomNoInput();
-        System.out.println("Zadej den, kdy se bude předmět konat");
+        ConsolePresentation.dayOfWeekInput(true);
         DayOfWeek weekday = dayOfWeekInput();
-        System.out.println("Zadej hodinu, kdy se bude předmět konat");
+        ConsolePresentation.hourInput(true);
         int hour = hourInput();
         Subject subject = new Subject(abbrev, name, lectorName, roomNo, weekday, hour);
-        compareHourAndDayOfWeek(subject);
+        compareHourDayOfWeekAndRoomNo(subject);
         saveSubject(subject);
     }
 
 
     public void editSubjectByID(Long id) {
         Subject subject = RepositoryLocator.getSubjectRepository().findByID(id);
-        System.out.println("Zadej zkratku předmětu, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.abbrevInput(false);
         String abbrev = editAbbrev(subject.getAbbrev());
         subject.setAbbrev(abbrev);
-        System.out.println("Zadej název předmětu, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.nameInput(false);
         String name = editName(subject.getName());
         subject.setName(name);
-        System.out.println("Zadej jméno vyučujícího, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.lectorNameInput(false);
         String lectorName = editLectorName(subject.getLectorName());
         subject.setLectorName(lectorName);
-        System.out.println("Zadej číslo učebny, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.roomNoInput(false);
         int roomNo = editRoomNo(subject.getRoomNo());
         subject.setRoomNo(roomNo);
-        System.out.println("Zadej den, kdy se bude předmět konat, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.dayOfWeekInput(false);
         DayOfWeek weekday = editDayOfWeek(subject.getWeekday());
         subject.setWeekday(weekday);
-        System.out.println("Zadej hodinu, kdy se bude předmět konat, prázdný text pro pokračování bez změny.");
+        ConsolePresentation.hourInput(false);
         int hour = editHour(subject.getHour());
         if (hour == subject.getHour())
             subject.setHour(hour);
         else {
             subject.setHour(hour);
-            compareHourAndDayOfWeek(subject);
+            compareHourDayOfWeekAndRoomNo(subject);
         }
         saveSubject(subject);
     }
@@ -162,6 +163,7 @@ public class SubjectServiceImpl implements SubjectService {
         subjects.add(pr10);
         for (Subject subject : subjects
                 ) {
+            compareHourDayOfWeekAndRoomNo(subject);
             saveSubject(subject);
 
         }
@@ -172,14 +174,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
 
-    private void compareHourAndDayOfWeek(Subject predmet) {
-        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByHourAndDayOfWeek(predmet.getHour(), predmet.getWeekday(), predmet.getRoomNo());
+    private void compareHourDayOfWeekAndRoomNo(Subject predmet) {
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByHourDayOfWeekAndRoomNo(predmet.getHour(), predmet.getWeekday(), predmet.getRoomNo());
         for (Subject subject : subjects) {
             if (subject.getHour() == predmet.getHour()) {
-                System.out.println("Předmět " + subject.getName() + " je v tento den (" + subject.getWeekday().toString() + "), v této místnosti v této hodině(" + subject.getHour() + ")");
-                System.out.println("Zadej jinou hodinu");
-                predmet.setHour(setNewHour(subject.getHour()));
-                compareHourAndDayOfWeek(predmet);
+                ConsolePresentation.compateHourDayOfWeekRoomNo(subject);
+                predmet.setHour(setNewHour(predmet.getHour()));
+                compareHourDayOfWeekAndRoomNo(predmet);
                 break;
 
             }

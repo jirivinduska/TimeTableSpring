@@ -98,6 +98,20 @@ public class ConsoleService {
         }
         return id;
     }
+    public static Long idInput(Long id) {
+        Long newId;
+        try {
+            newId = Long.parseLong(sc.nextLine());
+            if (newId.equals(id)) {
+                System.out.println("Na zadaný předmět je student již zapsán! Zadej nové ID:");
+                return idInput(id);
+            }
+        } catch (Exception e) {
+            System.out.println("Musíš zadat číslo!");
+            return idInput();
+        }
+        return newId;
+    }
 
     public static int hourInput() {
         int number;
