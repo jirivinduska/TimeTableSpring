@@ -113,6 +113,11 @@ public class SubjectServiceImpl implements SubjectService {
 
     public void editSubjectByID(Long id) {
         Subject subject = RepositoryLocator.getSubjectRepository().findByID(id);
+
+        int oldHour = subject.getHour();
+        subject.setHour(0);
+        saveSubject(subject);
+
         ConsolePresentation.abbrevInput(false);
         String abbrev = editAbbrev(subject.getAbbrev());
         subject.setAbbrev(abbrev);
@@ -129,13 +134,11 @@ public class SubjectServiceImpl implements SubjectService {
         DayOfWeek weekday = editDayOfWeek(subject.getWeekday());
         subject.setWeekday(weekday);
         ConsolePresentation.hourInput(false);
-        int hour = editHour(subject.getHour());
-        if (hour == subject.getHour())
-            subject.setHour(hour);
-        else {
-            subject.setHour(hour);
-            compareHourDayOfWeekAndRoomNo(subject);
-        }
+        int hour = editHour(oldHour);
+
+        subject.setHour(hour);
+        compareHourDayOfWeekAndRoomNo(subject);
+
         saveSubject(subject);
     }
 
