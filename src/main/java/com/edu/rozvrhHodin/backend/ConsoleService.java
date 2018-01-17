@@ -38,19 +38,20 @@ public class ConsoleService {
         }
         return email;
     }
+
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
 
-    public static String abrevInput() {
-        String abrev = sc.nextLine();
-        if (abrev.length() > 5) {
+    public static String abbrevInput() {
+        String abbrev = sc.nextLine();
+        if (abbrev.length() > 5) {
             System.out.println("Zkratka předmětu musí být maximálně pět písmen");
-            return abrevInput();
+            return abbrevInput();
         }
-        abrev = abrev.toUpperCase();
-        return abrev;
+        abbrev = abbrev.toUpperCase();
+        return abbrev;
     }
 
     public static String lectorNameInput() {
@@ -86,17 +87,17 @@ public class ConsoleService {
         }
         return number;
     }
-public static Long idInput(){
+
+    public static Long idInput() {
         Long id;
-    try {
-        id = Long.parseLong(sc.nextLine());
-    }
-         catch(Exception e){
+        try {
+            id = Long.parseLong(sc.nextLine());
+        } catch (Exception e) {
             System.out.println("Musíš zadat číslo!");
             return idInput();
         }
         return id;
-}
+    }
 
     public static int hourInput() {
         int number;
@@ -122,7 +123,7 @@ public static Long idInput(){
             System.out.println("Musíš zadat den ve tvaru: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY");
             return dayOfWeekInput();
         }
-        if (dayOfWeek.compareTo(DayOfWeek.SATURDAY)==0||dayOfWeek.compareTo(DayOfWeek.SUNDAY)==0 ){
+        if (dayOfWeek.compareTo(DayOfWeek.SATURDAY) == 0 || dayOfWeek.compareTo(DayOfWeek.SUNDAY) == 0) {
             System.out.println("Vyučování se nekoná o víkendu!");
             return dayOfWeekInput();
         }
@@ -140,7 +141,7 @@ public static Long idInput(){
 
     }
 
-    public static boolean findStudentSwitch(){
+    public static boolean findStudentSwitch() {
         String string = sc.nextLine();
         switch (string) {
             case "ID":
@@ -168,7 +169,7 @@ public static Long idInput(){
                 String firstName1 = ConsoleService.nameInput();
                 System.out.println("Zadejte příjmení: ");
                 String lastName1 = ConsoleService.nameInput();
-                ServiceLocator.getStudentService().printStudentByFistNameLastName(firstName1,lastName1);
+                ServiceLocator.getStudentService().printStudentByFistNameLastName(firstName1, lastName1);
                 break;
             default:
                 System.out.println("Musíte zadat: ID, firstName, lastName, userName nebo firstLastName");
@@ -176,7 +177,8 @@ public static Long idInput(){
         }
         return true;
     }
-    public static void findStudentSubjectSwitch(Long id){
+
+    public static void findStudentSubjectSwitch(Long id) {
         String string = sc.nextLine();
         if (string.equals("true"))
             ServiceLocator.getSubjectService().printTimeTableStudent(id);
@@ -186,9 +188,9 @@ public static Long idInput(){
 
     }
 
-    public static boolean findSubjectSwitch(){
+    public static boolean findSubjectSwitch() {
         String string = sc.nextLine();
-        switch (string){
+        switch (string) {
             case "ID":
                 System.out.println("Zadejte ID: ");
                 Long id = ConsoleService.idInput();
@@ -196,7 +198,7 @@ public static Long idInput(){
                 break;
             case "abbrev":
                 System.out.println("Zadejte abbrev: ");
-                String abbrev = ConsoleService.abrevInput();
+                String abbrev = ConsoleService.abbrevInput();
                 ServiceLocator.getSubjectService().printSubjectByAbbrev(abbrev);
                 break;
             case "name":
@@ -229,14 +231,135 @@ public static Long idInput(){
                 System.out.println("Musíte zadat: ID, abbrev, name, hour, lectorName, roomNo, weekday");
                 return findSubjectSwitch();
         }
-            return true;
+        return true;
     }
 
-    public static void initConsole(){
+    public static void initConsole() {
         ServiceLocator.getStudentService().prepareData();
         ServiceLocator.getSubjectService().prepareData();
         ServiceLocator.getStudentSubjectService().prepareData();
     }
 
+    public static String editUsername(String username) {
+        String newUsername = sc.nextLine();
+        if (newUsername.equals(""))
+            return username;
+        newUsername = newUsername.toLowerCase();
+        return newUsername;
+    }
+
+    public static String editName(String name) {
+        String newName = sc.nextLine();
+        if (newName.equals(""))
+            return name;
+        if (newName.length() < 2) {
+            System.out.println("Jmeno, příjmení a název předmětu nesmí být jedno písmenné");
+            return editName(name);
+        }
+        newName = newName.substring(0, 1).toUpperCase() + newName.substring(1).toLowerCase();
+        return newName;
+    }
+
+    public static String editEmail(String email) {
+        String newEmail = sc.nextLine();
+        if (newEmail.equals(""))
+            return email;
+        if (!validate(newEmail)) {
+            System.out.println("Zadaný text není email! Očekává vstup ve tvaru email@email.cz");
+            return editEmail(email);
+        }
+        return newEmail;
+    }
+
+    public static String editAbbrev(String abbrev) {
+        String newAbbrev = sc.nextLine();
+        if (newAbbrev.equals(""))
+            return abbrev;
+        if (newAbbrev.length() > 5) {
+            System.out.println("Zkratka předmětu musí být maximálně pět písmen");
+            return editAbbrev(abbrev);
+        }
+        newAbbrev = newAbbrev.toUpperCase();
+        return newAbbrev;
+    }
+
+    public static String editLectorName(String lectorName) {
+        String newLectorName = sc.nextLine();
+        if (newLectorName.equals(""))
+            return lectorName;
+        if (newLectorName.length() < 2) {
+            System.out.println("Jmeno učitele nesmí být kratší než jedno písmeno");
+            return editLectorName(lectorName);
+        }
+        try {
+            String name[] = newLectorName.split(" ");
+            name[0] = name[0].substring(0, 1).toUpperCase() + name[0].substring(1).toLowerCase();
+            name[1] = name[1].substring(0, 1).toUpperCase() + name[1].substring(1).toLowerCase();
+            newLectorName = name[0] + " " + name[1];
+        } catch (Exception e) {
+            System.out.println("Zadej jmeno a prijmeni, v zadaném textu musí být mezera");
+            return editLectorName(lectorName);
+        }
+        return newLectorName;
+
+    }
+
+    public static int editHour(int hour) {
+        int newHour;
+        String string = sc.nextLine();
+        if (string.equals(""))
+            return hour;
+        try {
+            newHour = Integer.parseInt(string);
+            if (newHour > 6 || newHour == 0) {
+                System.out.println("Naše škola má jenom 6 vyučovacích hodin a nelze mít nultou hodinu");
+                return editHour(hour);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Musíš zadat číslo!");
+            return editHour(hour);
+        }
+        return newHour;
+
+    }
+
+    public static int editRoomNo(int roomNo) {
+        int newRoomNo;
+        String string = sc.nextLine();
+        if (string.equals(""))
+            return roomNo;
+        try {
+            newRoomNo = Integer.parseInt(string);
+            if (newRoomNo > 20 || newRoomNo == 0) {
+                System.out.println("Naše škola má jenom 20 učeben a neexistuje nultá učebna");
+                return editRoomNo(roomNo);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Musíš zadat číslo!");
+            return editRoomNo(roomNo);
+        }
+        return newRoomNo;
+    }
+
+    public static DayOfWeek editDayOfWeek(DayOfWeek dayOfWeek) {
+        DayOfWeek newDayOfWeek;
+        String string = sc.nextLine();
+        if (string.equals(""))
+            return dayOfWeek;
+        try {
+            newDayOfWeek = DayOfWeek.valueOf(string.toUpperCase());
+        } catch (Exception e) {
+            System.out.println("Musíš zadat den ve tvaru: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY");
+            return editDayOfWeek(dayOfWeek);
+        }
+        if (newDayOfWeek.compareTo(DayOfWeek.SATURDAY) == 0 || newDayOfWeek.compareTo(DayOfWeek.SUNDAY) == 0) {
+            System.out.println("Vyučování se nekoná o víkendu!");
+            return editDayOfWeek(dayOfWeek);
+        }
+
+        return newDayOfWeek;
+    }
 
 }

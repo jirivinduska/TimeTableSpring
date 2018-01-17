@@ -8,4 +8,5 @@ import java.util.List;
 public interface SubjectPresentation {
     void printSubjects(List<Subject> subjects);
     void printTimeTable(List<Subject> subjects);
+    void printTimeTableInverted(List<Subject> subjects);
 }

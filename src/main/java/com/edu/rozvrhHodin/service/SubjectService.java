@@ -17,7 +17,7 @@ public interface SubjectService {
 
     void printSubjectByStudent(Long id);
     void printTimeTableStudent(Long id);
-    void printTimeTableStudents(Long id1,Long id2);
+    void printTimeTableStudents(Long id1,Long id2,boolean inverted);
 
     void addSubject();
 

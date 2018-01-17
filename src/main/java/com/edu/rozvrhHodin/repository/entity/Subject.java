@@ -22,7 +22,7 @@ public class Subject {
     @Column(name = "lector_name")
     private String lectorName;
 
-    @Column(name="room_number")
+    @Column(name = "room_number")
     private int roomNo;
 
     @Enumerated(EnumType.STRING)
@@ -34,7 +34,7 @@ public class Subject {
     @OneToMany(mappedBy = "subject")
     public Set<StudentSubject> studentSubjectSet = new HashSet<StudentSubject>();
 
-    public Subject(){
+    public Subject() {
 
     }
 
@@ -115,15 +115,4 @@ public class Subject {
 
     }
 
-    @Override
-    public String toString() {
-        return "Predmet{" +
-                "abrev='" + abbrev + '\'' +
-                ", name='" + name + '\'' +
-                ", lectorName='" + lectorName + '\'' +
-                ", roomNo=" + roomNo +
-                ", weekday=" + weekday +
-                ", hour=" + hour +
-                '}';
-    }
 }

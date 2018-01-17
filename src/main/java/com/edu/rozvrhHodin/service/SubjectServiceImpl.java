@@ -8,6 +8,7 @@ import com.edu.rozvrhHodin.repository.entity.Subject;
 import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -74,22 +75,25 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
 
-    public void printTimeTableStudents(Long id1,Long id2) {
+    public void printTimeTableStudents(Long id1, Long id2, boolean inverted) {
         List<Subject> subjects1 = RepositoryLocator.getSubjectRepository().findByStudent(id1);
         List<Subject> subjects2 = RepositoryLocator.getSubjectRepository().findByStudent(id2);
-        List<Subject> subjects = subjects1;
-        for (Subject subject:subjects2){
-            if (!subjects.contains(subject))
-                subjects.add(subject);
+
+        for (Subject subject : subjects2) {
+            if (!subjects1.contains(subject))
+                subjects1.add(subject);
         }
         ServiceLocator.getStudentService().printStudentByID(id1);
         ServiceLocator.getStudentService().printStudentByID(id2);
-        PresentationLocator.getSubjectPresentation().printTimeTable(subjects);
+        if (!inverted)
+            PresentationLocator.getSubjectPresentation().printTimeTable(subjects1);
+        else
+            PresentationLocator.getSubjectPresentation().printTimeTableInverted(subjects1);
     }
 
     public void addSubject() {
         System.out.println("Zadej zkratku předmětu");
-        String abrev = abrevInput();
+        String abbrev = abbrevInput();
         System.out.println("Zadej název předmětu");
         String name = nameInput();
         System.out.println("Zadej jméno vyučujícího");
@@ -100,14 +104,38 @@ public class SubjectServiceImpl implements SubjectService {
         DayOfWeek weekday = dayOfWeekInput();
         System.out.println("Zadej hodinu, kdy se bude předmět konat");
         int hour = hourInput();
-        Subject subject = new Subject(abrev, name, lectorName, roomNo, weekday, hour);
+        Subject subject = new Subject(abbrev, name, lectorName, roomNo, weekday, hour);
         compareHourAndDayOfWeek(subject);
         saveSubject(subject);
     }
 
 
     public void editSubjectByID(Long id) {
-
+        Subject subject = RepositoryLocator.getSubjectRepository().findByID(id);
+        System.out.println("Zadej zkratku předmětu, prázdný text pro pokračování bez změny.");
+        String abbrev = editAbbrev(subject.getAbbrev());
+        subject.setAbbrev(abbrev);
+        System.out.println("Zadej název předmětu, prázdný text pro pokračování bez změny.");
+        String name = editName(subject.getName());
+        subject.setName(name);
+        System.out.println("Zadej jméno vyučujícího, prázdný text pro pokračování bez změny.");
+        String lectorName = editLectorName(subject.getLectorName());
+        subject.setLectorName(lectorName);
+        System.out.println("Zadej číslo učebny, prázdný text pro pokračování bez změny.");
+        int roomNo = editRoomNo(subject.getRoomNo());
+        subject.setRoomNo(roomNo);
+        System.out.println("Zadej den, kdy se bude předmět konat, prázdný text pro pokračování bez změny.");
+        DayOfWeek weekday = editDayOfWeek(subject.getWeekday());
+        subject.setWeekday(weekday);
+        System.out.println("Zadej hodinu, kdy se bude předmět konat, prázdný text pro pokračování bez změny.");
+        int hour = editHour(subject.getHour());
+        if (hour == subject.getHour())
+            subject.setHour(hour);
+        else {
+            subject.setHour(hour);
+            compareHourAndDayOfWeek(subject);
+        }
+        saveSubject(subject);
     }
 
     public void prepareData() {
@@ -145,11 +173,10 @@ public class SubjectServiceImpl implements SubjectService {
 
 
     private void compareHourAndDayOfWeek(Subject predmet) {
-
-        for (Subject subject : RepositoryLocator.getSubjectRepository().findByHourAndDayOfWeek(predmet.getHour(),predmet.getWeekday(),predmet.getRoomNo())
-                ) {
+        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByHourAndDayOfWeek(predmet.getHour(), predmet.getWeekday(), predmet.getRoomNo());
+        for (Subject subject : subjects) {
             if (subject.getHour() == predmet.getHour()) {
-                System.out.println("Předmět " + subject.getName() + " je v tento den ("+ subject.getWeekday().toString() +"), v této místnosti v této hodině(" + subject.getHour() + ")");
+                System.out.println("Předmět " + subject.getName() + " je v tento den (" + subject.getWeekday().toString() + "), v této místnosti v této hodině(" + subject.getHour() + ")");
                 System.out.println("Zadej jinou hodinu");
                 predmet.setHour(setNewHour(subject.getHour()));
                 compareHourAndDayOfWeek(predmet);
@@ -159,5 +186,5 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
 
-}
+    }
 }

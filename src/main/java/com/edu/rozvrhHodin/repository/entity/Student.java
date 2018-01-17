@@ -27,7 +27,7 @@ public class Student {
     @OneToMany(mappedBy = "student")
     public Set<StudentSubject> studentSubjects = new HashSet<StudentSubject>();
 
-    public Student(){
+    public Student() {
 
     }
 
@@ -55,7 +55,6 @@ public class Student {
     public void deactivate() {
         this.active = false;
     }
-
 
 
     public Long getId() {
@@ -98,14 +97,5 @@ public class Student {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
+
 }

@@ -25,13 +25,15 @@ public class ServiceLocator {
     private ServiceLocator() {
 
     }
-    public static StudentSubjectService getStudentSubjectService(){
+
+    public static StudentSubjectService getStudentSubjectService() {
         if (studentSubjectService == null) {
             studentSubjectService = new StudentSubjectServiceImpl();
         }
 
         return studentSubjectService;
     }
+
     public static StudentService getStudentService() {
         if (studentService == null) {
             studentService = new StudentServiceImpl();
@@ -39,6 +41,7 @@ public class ServiceLocator {
 
         return studentService;
     }
+
     public static SubjectService getSubjectService() {
         if (subjectService == null) {
             subjectService = new SubjectServiceImpl();

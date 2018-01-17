@@ -61,21 +61,20 @@ public class StudentRepositoryImpl implements StudentRepository {
         return entityManager.createQuery(cq).getResultList();
     }
 
-    public List<Student> findBySubject(Long id){
+    public List<Student> findBySubject(Long id) {
         EntityManager entityManager = ServiceLocator.createEntityManager();
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Student> cq = cb.createQuery(Student.class);
 
         Root<Student> studentRoot = cq.from(Student.class);
-        Join<Student,StudentSubject> studentSubjectJoin = studentRoot.join("studentSubjects");
+        Join<Student, StudentSubject> studentSubjectJoin = studentRoot.join("studentSubjects");
 
-        cq.where(cb.equal(studentSubjectJoin.get("subject"),id));
+        cq.where(cb.equal(studentSubjectJoin.get("subject"), id));
 
         return entityManager.createQuery(cq).getResultList();
 
     }
-
 
 
     public List<Student> findByFirstNameAndLastName(String firstName, String lastName) {
