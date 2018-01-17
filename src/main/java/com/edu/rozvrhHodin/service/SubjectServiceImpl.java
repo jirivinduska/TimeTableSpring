@@ -143,7 +143,7 @@ public class SubjectServiceImpl implements SubjectService {
         List<Subject> subjects = new ArrayList<Subject>();
         Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře", 1, DayOfWeek.MONDAY, 1);
         subjects.add(pr1);
-        Subject pr2 = new Subject("INAR1", "Teorie automatického řízení I", "Tomáš Jedno", 1, DayOfWeek.MONDAY, 2);
+        Subject pr2 = new Subject("INAR1", "Teorie automatického řízení I", "Tomáš Jedno", 2, DayOfWeek.MONDAY, 1);
         subjects.add(pr2);
         Subject pr3 = new Subject("INVKM", "Vybrané kapitoly z matematiky", "Kamil Čůral", 3, DayOfWeek.TUESDAY, 4);
         subjects.add(pr3);

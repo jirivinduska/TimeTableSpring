@@ -110,10 +110,11 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
         Long id;
 
         if (!subjects.isEmpty()) {
-            ConsolePresentation.compareHourDayOdWeekStudent(subject);
+
             if (prepare) {
                 id = gamble(subject.getId());
             } else {
+                ConsolePresentation.compareHourDayOdWeekStudent(subject);
                 id = ConsoleService.idInput(subject.getId());
             }
             subject = RepositoryLocator.getSubjectRepository().findByID(id);
