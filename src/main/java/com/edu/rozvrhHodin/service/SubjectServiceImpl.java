@@ -80,16 +80,18 @@ public class SubjectServiceImpl implements SubjectService {
         List<Subject> subjects1 = RepositoryLocator.getSubjectRepository().findByStudent(id1);
         List<Subject> subjects2 = RepositoryLocator.getSubjectRepository().findByStudent(id2);
 
-        for (Subject subject : subjects2) {
-            if (!subjects1.contains(subject))
-                subjects1.add(subject);
-        }
+
         ServiceLocator.getStudentService().printStudentByID(id1);
         ServiceLocator.getStudentService().printStudentByID(id2);
         if (!inverted)
-            PresentationLocator.getSubjectPresentation().printTimeTable(subjects1);
-        else
+            PresentationLocator.getSubjectPresentation().printTimeTable(subjects1,subjects2);
+        else {
+            for (Subject subject : subjects2) {
+                if (!subjects1.contains(subject))
+                    subjects1.add(subject);
+            }
             PresentationLocator.getSubjectPresentation().printTimeTableInverted(subjects1);
+        }
     }
 
     public void addSubject() {

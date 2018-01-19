@@ -51,7 +51,65 @@ public class SubjectPresentationImpl implements SubjectPresentation {
         System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
     }
 
+    public void printTimeTable(List<Subject> subjects1, List<Subject> subjects2) {
+        String[][] timetable = new String[11][7];
+        timetable[0][0] = "-Rozvrh-";
+        int day = 1;
+        for (int i = 1; i < timetable.length; i ++) {
+            timetable[i][0] = DayOfWeek.of(day).toString();
+            if ((i % 2) == 0)
+                day++;
+        }
+        day = 1;
+        for (int j = 1; j < timetable[0].length; j++) {
+            int time = 7 + j;
+            timetable[0][j] = String.format("%d - %d ", time, time + 1);
+        }
 
+        for (int i = 1; i < timetable.length; i = i + 2) {
+            
+            for (int j = 1; j < timetable[i].length; j++) {
+
+                for (Subject subject : subjects1
+                        ) {
+                    if (day == subject.getWeekday().getValue()) {
+                        if (j == subject.getHour())
+                            timetable[i][j] = subject.getAbbrev();
+                    }
+                }
+                }
+                day++;
+            }
+         day = 1;
+        for (int i = 2; i < timetable.length; i=i+2) {
+            
+            for (int j = 1; j < timetable[i].length; j++) {
+
+                for (Subject subject : subjects2
+                        ) {
+                    if (day == subject.getWeekday().getValue()) {
+                        if (j == subject.getHour())
+                            timetable[i][j] = subject.getAbbrev();
+                    }
+                }
+            }
+            day ++;
+        }
+
+        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
+        for (int i = 0; i < timetable.length; i++) {
+            for (int j = 0; j < timetable[i].length; j++) {
+                String string = timetable[i][j];
+
+                if (string == null)
+                    System.out.printf("|      %-10s |"," xxx ");
+                else
+                    System.out.printf("|      %-10s |", string);
+            }
+            System.out.println();
+        }
+        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
+    }
     public void printTimeTableInverted(List<Subject> subjects) {
         String[][] timetable = timeTablePreparation();
         for (int i = 1; i < timetable.length; i++) {
