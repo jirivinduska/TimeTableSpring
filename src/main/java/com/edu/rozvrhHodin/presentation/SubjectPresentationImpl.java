@@ -1,5 +1,6 @@
 package com.edu.rozvrhHodin.presentation;
 
+import com.edu.rozvrhHodin.frontend.ConsolePresentation;
 import com.edu.rozvrhHodin.repository.entity.Student;
 import com.edu.rozvrhHodin.repository.entity.Subject;
 
@@ -27,35 +28,21 @@ public class SubjectPresentationImpl implements SubjectPresentation {
         for (int i = 1; i < timetable.length; i++) {
             for (int j = 1; j < timetable[i].length; j++) {
 
-                for (Subject subject : subjects
-                        ) {
-                    if (i == subject.getWeekday().getValue()) {
-                        if (j == subject.getHour())
-                            timetable[i][j] = subject.getAbbrev();
-                    }
-                }
-            }
-        }
 
-        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
-        for (int i = 0; i < timetable.length; i++) {
-            for (int j = 0; j < timetable[i].length; j++) {
-                String string = timetable[i][j];
-                if (string == null)
-                    System.out.printf("|      %-10s |", " xxx ");
-                else
-                    System.out.printf("|      %-10s |", string);
+                timetable[i][j] = fillTimeTable(j, i, subjects);
+
             }
-            System.out.println();
+
+
         }
-        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
+        ConsolePresentation.printTimeTable(timetable, false);
     }
 
     public void printTimeTable(List<Subject> subjects1, List<Subject> subjects2) {
         String[][] timetable = new String[11][7];
         timetable[0][0] = "-Rozvrh-";
         int day = 1;
-        for (int i = 1; i < timetable.length; i ++) {
+        for (int i = 1; i < timetable.length; i++) {
             timetable[i][0] = DayOfWeek.of(day).toString();
             if ((i % 2) == 0)
                 day++;
@@ -67,49 +54,26 @@ public class SubjectPresentationImpl implements SubjectPresentation {
         }
 
         for (int i = 1; i < timetable.length; i = i + 2) {
-            
+
             for (int j = 1; j < timetable[i].length; j++) {
 
-                for (Subject subject : subjects1
-                        ) {
-                    if (day == subject.getWeekday().getValue()) {
-                        if (j == subject.getHour())
-                            timetable[i][j] = subject.getAbbrev();
-                    }
-                }
-                }
-                day++;
+                timetable[i][j] = fillTimeTable(j, day, subjects1);
             }
-         day = 1;
-        for (int i = 2; i < timetable.length; i=i+2) {
-            
+            day++;
+        }
+        day = 1;
+        for (int i = 2; i < timetable.length; i = i + 2) {
+
             for (int j = 1; j < timetable[i].length; j++) {
 
-                for (Subject subject : subjects2
-                        ) {
-                    if (day == subject.getWeekday().getValue()) {
-                        if (j == subject.getHour())
-                            timetable[i][j] = subject.getAbbrev();
-                    }
-                }
+                timetable[i][j] = fillTimeTable(j, day, subjects2);
             }
-            day ++;
+            day++;
         }
 
-        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
-        for (int i = 0; i < timetable.length; i++) {
-            for (int j = 0; j < timetable[i].length; j++) {
-                String string = timetable[i][j];
-
-                if (string == null)
-                    System.out.printf("|      %-10s |"," xxx ");
-                else
-                    System.out.printf("|      %-10s |", string);
-            }
-            System.out.println();
-        }
-        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
+        ConsolePresentation.printTimeTable(timetable, false);
     }
+
     public void printTimeTableInverted(List<Subject> subjects) {
         String[][] timetable = timeTablePreparation();
         for (int i = 1; i < timetable.length; i++) {
@@ -124,18 +88,7 @@ public class SubjectPresentationImpl implements SubjectPresentation {
                 }
             }
         }
-        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
-        for (int i = 0; i < timetable.length; i++) {
-            for (int j = 0; j < timetable[i].length; j++) {
-                String string = timetable[i][j];
-                if (string == null)
-                    System.out.printf("|      %-10s |", " Volno ");
-                else
-                    System.out.printf("|      %-10s |", string);
-            }
-            System.out.println();
-        }
-        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
+        ConsolePresentation.printTimeTable(timetable, true);
     }
 
 
@@ -154,5 +107,17 @@ public class SubjectPresentationImpl implements SubjectPresentation {
         }
 
         return timetable;
+    }
+
+    private String fillTimeTable(int hour, int day, List<Subject> subjects) {
+        String string = null;
+        for (Subject subject : subjects
+                ) {
+            if (day == subject.getWeekday().getValue()) {
+                if (hour == subject.getHour())
+                    string = subject.getAbbrev();
+            }
+        }
+        return string;
     }
 }

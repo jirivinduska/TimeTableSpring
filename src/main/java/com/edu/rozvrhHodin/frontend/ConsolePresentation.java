@@ -112,4 +112,25 @@ public class ConsolePresentation {
         System.out.println("Zadej jiný předmět:");
     }
 
+    public static void printTimeTable(String timetable[][],boolean freetime){
+        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
+        for (int i = 0; i < timetable.length; i++) {
+            for (int j = 0; j < timetable[i].length; j++) {
+                String string = timetable[i][j];
+                if (string == null)
+                    if (freetime)
+                        System.out.printf("|      %-10s |", " Volno ");
+                    else
+                        System.out.printf("|      %-10s |", " xxx ");
+                else {
+                    System.out.printf("|      %-10s |", string);
+
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("+-----------------------------------------------------------------------------------------------------------------------------------+");
+
+    }
+
 }
