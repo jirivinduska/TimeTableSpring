@@ -53,7 +53,7 @@ public class SubjectPresentationImpl implements SubjectPresentation {
             timetable[0][j] = String.format("%d - %d ", time, time + 1);
         }
 
-        for (int i = 1; i < timetable.length; i = i + 2) {
+        for (int i = 1; i < timetable.length; i += 2) {
 
             for (int j = 1; j < timetable[i].length; j++) {
 
@@ -62,7 +62,7 @@ public class SubjectPresentationImpl implements SubjectPresentation {
             day++;
         }
         day = 1;
-        for (int i = 2; i < timetable.length; i = i + 2) {
+        for (int i = 2; i < timetable.length; i+= 2) {
 
             for (int j = 1; j < timetable[i].length; j++) {
 
