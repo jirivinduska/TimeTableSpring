@@ -24,7 +24,7 @@ public class ConsolePresentation {
         System.out.println("findStudent - vypíše studenta podle zadaného identifikátoru");
         System.out.println("findSubject - vypíše předmět podle zadaného identifikátoru");
         System.out.println("findStudentSubject - vypíše seznam předmětů na které je student zapsaný nebo vypíše jeho rozvrh");
-        System.out.println("findStudentsSubjects - vypíše rozvrh dvou vybraných studentů(společné předměty jsou zobrazeny pouze jednou)");
+        System.out.println("findStudentsSubjects - vypíše rozvrh dvou vybraných studentů");
         System.out.println("findStudentsOnSubject - vypíše seznam studentů zapsaných na předmětu");
         System.out.println("findFreeTime - vypíše rozvrh dvou vybraných studentů, zobrazí volný čas");
         System.out.println("deactivateStudent - deaktivuje studenta");
@@ -36,8 +36,17 @@ public class ConsolePresentation {
 
     }
 
-    public static void cannot() {
-        System.out.println("Zadaný student je neaktivní, nelze ho přidat na předmět");
+    public static void studentNull() {
+        System.out.println("Zadaný student neexistuje!");
+    }
+    public static void subjectNull() {
+        System.out.println("Zadaný předmět neexistuje!");
+    }
+    public static void studentDeactivated() {
+        System.out.println("Zadaný student je neaktivní!");
+    }
+    public static void studentSubjectNull() {
+        System.out.println("Zadaná kombinace studenta a předmětu neexistuje!");
     }
 
     public static void userNameInput(boolean input) {
@@ -107,7 +116,7 @@ public class ConsolePresentation {
         System.out.println("Předmět " + subject.getName() + " je v tento den (" + subject.getWeekday().toString() + "), v této místnosti v této hodině(" + subject.getHour() + ").");
         System.out.println("Zadej jinou hodinu:");
     }
-    public static void compareHourDayOdWeekStudent(Subject subject){
+    public static void compareHourDayOdWeekStudent(){
         System.out.println("Student v tento den a hodinu již má předmět.");
         System.out.println("Zadej jiný předmět:");
     }

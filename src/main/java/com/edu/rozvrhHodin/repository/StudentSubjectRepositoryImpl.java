@@ -6,6 +6,7 @@ import com.edu.rozvrhHodin.repository.entity.Subject;
 import com.edu.rozvrhHodin.service.ServiceLocator;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -30,8 +31,15 @@ public class StudentSubjectRepositoryImpl implements StudentSubjectRepository {
             predicates.add(cb.equal(studentSubjectRoot.get("subject"), idSubject));
 
         cq.select(studentSubjectRoot).where(predicates.toArray(new Predicate[]{}));
+        StudentSubject studentSubject =null;
+        try {
+           studentSubject= entityManager.createQuery(cq).getSingleResult();
+        }catch (NoResultException e){
+            //this never happens
+            System.out.print(e.fillInStackTrace());
+        }
 
-        return entityManager.createQuery(cq).getSingleResult();
+        return studentSubject;
     }
 
     public void saveStudentSubject(StudentSubject studentSubject) {

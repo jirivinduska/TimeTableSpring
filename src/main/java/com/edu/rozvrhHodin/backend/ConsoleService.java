@@ -194,11 +194,14 @@ public class ConsoleService {
 
     public static void findStudentSubjectSwitch(Long id) {
         String string = sc.nextLine();
-        if (string.equals("true"))
+        if (string.equals("true")) {
             ServiceLocator.getSubjectService().printTimeTableStudent(id);
-        else
+
+        }
+        else {
             ServiceLocator.getSubjectService().printSubjectByStudent(id);
 
+        }
 
     }
 

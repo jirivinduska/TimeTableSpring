@@ -60,13 +60,17 @@ public class StudentServiceImpl implements StudentService {
 
     public void deactivateStudentByID(Long id) {
         Student student = RepositoryLocator.getStudentRepository().findByID(id);
-        student.deactivate();
-        saveStudent(student);
-        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByStudent(id);
-        for (Subject subject : subjects
-                ) {
-            ServiceLocator.getStudentSubjectService().deleteStudentSubject(student.getId(), subject.getId());
-        }
+        if (student!=null) {
+            student.deactivate();
+            saveStudent(student);
+            List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByStudent(id);
+            for (Subject subject : subjects
+                    ) {
+                ServiceLocator.getStudentSubjectService().deleteStudentSubject(student.getId(), subject.getId());
+            }
+        }else
+            ConsolePresentation.studentNull();
+
     }
 
 
@@ -74,30 +78,34 @@ public class StudentServiceImpl implements StudentService {
         ConsolePresentation.userNameInput(true);
         String username = usernameInput();
         ConsolePresentation.firstNameInput(true);
-        String firstname = nameInput();
+        String firstName = nameInput();
         ConsolePresentation.lastNameInput(true);
-        String lastname = nameInput();
+        String lastName = nameInput();
         ConsolePresentation.emailInput(true);
         String email = emailInput();
-        Student student = new Student(username, firstname, lastname, email);
+        Student student = new Student(username, firstName, lastName, email);
         saveStudent(student);
     }
 
     public void editStudentByID(Long id) {
         Student student = RepositoryLocator.getStudentRepository().findByID(id);
-        ConsolePresentation.userNameInput(false);
-        String username = editUsername(student.getUserName());
-        student.setUserName(username);
-        ConsolePresentation.firstNameInput(false);
-        String firstname = editName(student.getFirstName());
-        student.setFirstName(firstname);
-        ConsolePresentation.lastNameInput(false);
-        String lastname = editName(student.getLastName());
-        student.setLastName(lastname);
-        ConsolePresentation.emailInput(false);
-        String email = editEmail(student.getEmail());
-        student.setEmail(email);
-        saveStudent(student);
+        if (student != null) {
+            ConsolePresentation.userNameInput(false);
+            String username = editUsername(student.getUserName());
+            student.setUserName(username);
+            ConsolePresentation.firstNameInput(false);
+            String firstName = editName(student.getFirstName());
+            student.setFirstName(firstName);
+            ConsolePresentation.lastNameInput(false);
+            String lastName = editName(student.getLastName());
+            student.setLastName(lastName);
+            ConsolePresentation.emailInput(false);
+            String email = editEmail(student.getEmail());
+            student.setEmail(email);
+            saveStudent(student);
+        }
+        else
+            ConsolePresentation.studentNull();
     }
 
 

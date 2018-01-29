@@ -65,6 +65,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     public void printSubjectByStudent(Long id) {
         List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByStudent(id);
+        ServiceLocator.getStudentService().printStudentByID(id);
         PresentationLocator.getSubjectPresentation().printSubjects(subjects);
     }
 
@@ -115,40 +116,42 @@ public class SubjectServiceImpl implements SubjectService {
 
     public void editSubjectByID(Long id) {
         Subject subject = RepositoryLocator.getSubjectRepository().findByID(id);
+        if (subject != null) {
 
-        int oldHour = subject.getHour();
-        subject.setHour(0);
-        saveSubject(subject);
+            int oldHour = subject.getHour();
+            subject.setHour(0);
+            saveSubject(subject);
 
-        ConsolePresentation.abbrevInput(false);
-        String abbrev = editAbbrev(subject.getAbbrev());
-        subject.setAbbrev(abbrev);
-        ConsolePresentation.nameInput(false);
-        String name = editName(subject.getName());
-        subject.setName(name);
-        ConsolePresentation.lectorNameInput(false);
-        String lectorName = editLectorName(subject.getLectorName());
-        subject.setLectorName(lectorName);
-        ConsolePresentation.roomNoInput(false);
-        int roomNo = editRoomNo(subject.getRoomNo());
-        subject.setRoomNo(roomNo);
-        ConsolePresentation.dayOfWeekInput(false);
-        DayOfWeek weekday = editDayOfWeek(subject.getWeekday());
-        subject.setWeekday(weekday);
-        ConsolePresentation.hourInput(false);
-        int hour = editHour(oldHour);
+            ConsolePresentation.abbrevInput(false);
+            String abbrev = editAbbrev(subject.getAbbrev());
+            subject.setAbbrev(abbrev);
+            ConsolePresentation.nameInput(false);
+            String name = editName(subject.getName());
+            subject.setName(name);
+            ConsolePresentation.lectorNameInput(false);
+            String lectorName = editLectorName(subject.getLectorName());
+            subject.setLectorName(lectorName);
+            ConsolePresentation.roomNoInput(false);
+            int roomNo = editRoomNo(subject.getRoomNo());
+            subject.setRoomNo(roomNo);
+            ConsolePresentation.dayOfWeekInput(false);
+            DayOfWeek weekday = editDayOfWeek(subject.getWeekday());
+            subject.setWeekday(weekday);
+            ConsolePresentation.hourInput(false);
+            int hour = editHour(oldHour);
+            subject.setHour(hour);
 
-        subject.setHour(hour);
-        compareHourDayOfWeekAndRoomNo(subject);
-
-        saveSubject(subject);
+            compareHourDayOfWeekAndRoomNo(subject);
+            saveSubject(subject);
+        } else
+            ConsolePresentation.subjectNull();
     }
 
     public void prepareData() {
         List<Subject> subjects = new ArrayList<Subject>();
         Subject pr1 = new Subject("INSZD", "Statistické metody zpracování dat", "Prokop Dveře", 1, DayOfWeek.MONDAY, 1);
         subjects.add(pr1);
-        Subject pr2 = new Subject("INAR1", "Teorie automatického řízení I", "Tomáš Jedno", 2, DayOfWeek.MONDAY, 1);
+        Subject pr2 = new Subject("INAR1", "Teorie automatického řízení I", "Tomáš Jedno", 1, DayOfWeek.MONDAY, 2);
         subjects.add(pr2);
         Subject pr3 = new Subject("INVKM", "Vybrané kapitoly z matematiky", "Kamil Čůral", 3, DayOfWeek.TUESDAY, 4);
         subjects.add(pr3);

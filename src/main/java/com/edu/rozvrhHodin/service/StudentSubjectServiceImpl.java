@@ -19,22 +19,37 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
         StudentSubject studentSubject = new StudentSubject();
         Subject subject = RepositoryLocator.getSubjectRepository().findByID(idSubject);
         Student student = RepositoryLocator.getStudentRepository().findByID(idStudent);
-        if (student.getActive()) {
+        if (student != null && subject != null && student.getActive() ) {
             Subject newSubject = compareHourAndWeekDay(subject,student,false);
-            studentSubject.setSubject(newSubject);
-            studentSubject.setStudent(student);
-            studentSubject.setWeekday(newSubject.getWeekday());
-            studentSubject.setClassHour(newSubject.getHour());
-            studentSubject.setModificationDate(Calendar.getInstance());
-            saveStudentSubject(studentSubject);
+            if (newSubject != null) {
+                studentSubject.setSubject(newSubject);
+                studentSubject.setStudent(student);
+                studentSubject.setWeekday(newSubject.getWeekday());
+                studentSubject.setClassHour(newSubject.getHour());
+                studentSubject.setModificationDate(Calendar.getInstance());
+                saveStudentSubject(studentSubject);
+            }
+            else
+                ConsolePresentation.subjectNull();
         } else
-            ConsolePresentation.cannot();
+        {
+            if (student == null)
+                ConsolePresentation.studentNull();
+            if (subject == null)
+                ConsolePresentation.subjectNull();
+            if (student != null && !student.getActive())
+                ConsolePresentation.studentDeactivated();
+        }
+
     }
 
 
     public void deleteStudentSubject(Long idStudent, Long idSubject) {
         StudentSubject studentSubject = RepositoryLocator.getStudentSubjectRepository().findStudentOnSubject(idStudent, idSubject);
-        RepositoryLocator.getStudentSubjectRepository().deleteStudentSubject(studentSubject);
+        if (studentSubject != null)
+            RepositoryLocator.getStudentSubjectRepository().deleteStudentSubject(studentSubject);
+        else
+            ConsolePresentation.studentSubjectNull();
     }
 
     public void prepareData() {
@@ -106,19 +121,23 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
     }
 
     private Subject compareHourAndWeekDay(Subject subject, Student student, boolean prepare) {
-        List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByStudentWeekDayAndHour(student.getId(), subject.getWeekday(), subject.getHour());
-        Long id;
+        if (subject!=null) {
+            List<Subject> subjects = RepositoryLocator.getSubjectRepository().findByStudentWeekDayAndHour(student.getId(), subject.getWeekday(), subject.getHour());
+            Long id;
 
-        if (!subjects.isEmpty()) {
+            if (!subjects.isEmpty()) {
 
-            if (prepare) {
-                id = gamble(subject.getId());
-            } else {
-                ConsolePresentation.compareHourDayOdWeekStudent(subject);
-                id = ConsoleService.idInput(subject.getId());
+                if (prepare) {
+                    id = gamble(subject.getId());
+                } else {
+                    ConsolePresentation.compareHourDayOdWeekStudent();
+                    id = ConsoleService.idInput(subject.getId());
+                }
+                subject = RepositoryLocator.getSubjectRepository().findByID(id);
+                return compareHourAndWeekDay(subject, student, prepare);
             }
-            subject = RepositoryLocator.getSubjectRepository().findByID(id);
-            return compareHourAndWeekDay(subject, student, prepare);
+
+            return subject;
         }
         return subject;
     }
